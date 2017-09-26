@@ -1,0 +1,25 @@
+-----------------------
+New
+
+Name = Oracle
+OdbcConnStr = 
+OdbcConnStrTrusted = 
+OleDbConnStr = Provider=OraOLEDB.Oracle; Data Source={DS}; UserID={UID}; Password={PSWD}
+OleDbConnStrTrusted = Provider=OraOLEDB.Oracle; Data Source={DS}; OSAuthent=1;
+DotNetConnStr =
+DotNetConnStrTrusted = 
+FileExt =
+GUID =
+
+-----------------------
+New
+
+Name = Oracle (MS)
+OdbcConnStr =
+OdbcConnStrTrusted = 
+OleDbConnStr = Provider=msdaora; Data Source={DS}; UserID={UID}; Password={PSWD}
+OleDbConnStrTrusted = Provider=msdaora; Data Source={DS}; Persist Security Info=False; Integrated Security=Yes;
+DotNetConnStr = 
+DotNetConnStrTrusted = 
+FileExt = 
+GUID = 

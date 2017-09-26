@@ -1,0 +1,86 @@
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe.config
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.pdb
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csprojResolveAssemblyReference.cache
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.dlgChooseSQL.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmBaseMDI.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChildDlg.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChooseDB.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmFK.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmInfo.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMain.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmManageExtProvs.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMasterChildLink.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOpenDB.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmPickOne.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQL2.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQLprops.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmTbls.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.Properties.Resources.resources
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csproj.GenerateResource.Cache
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.exe
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.pdb
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.pdb
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe.config
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.pdb
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.dll
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.pdb
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csprojResolveAssemblyReference.cache
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.dlgChooseSQL.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmBaseMDI.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChildDlg.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChooseDB.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmFK.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmInfo.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMain.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmManageExtProvs.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMasterChildLink.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOpenDB.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOptions.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmPickOne.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQL2.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQLprops.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmTbls.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.Properties.Resources.resources
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csproj.GenerateResource.Cache
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.exe
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.pdb
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.Smo.dll
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.Dmf.dll
+C:\Lee\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe.config
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.exe
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.pdb
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.pdb
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.Smo.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.Dmf.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.pdb
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csprojResolveAssemblyReference.cache
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.dlgChooseSQL.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmBaseMDI.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChildDlg.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChooseDB.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmFK.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmInfo.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMain.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmManageExtProvs.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMasterChildLink.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOpenDB.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOptions.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmPickOne.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQL2.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQLprops.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmTbls.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.Properties.Resources.resources
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csproj.GenerateResource.Cache

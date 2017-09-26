@@ -1,0 +1,14 @@
+Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Shared\UFront.mdb;User ID=;Password=
+Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Shared\MangiaDB.accdb;User ID=;Password=
+
+Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\Shared\UFront.mdb;Uid=;Pwd=;
+
+Server=GRUPS2\SQLEXPRESS;Database=msdb;Trusted_Connection=True;
+Server=GRUPS2\SQLEXPRESS;Database=msdb;User Id=uid;Password=pswd;
+
+Provider=SQLOLEDB;Data Source=GRUPS2\SQLEXPRESS;Initial Catalog=msdb;Integrated Security=SSPI
+Provider=SQLOLEDB;Data Source=GRUPS2\SQLEXPRESS;Initial Catalog=msdb;User ID=uid;Password=pswd
+
+Driver={SQL Server};Server=GRUPS2\SQLEXPRESS;Database=msdb;Uid=uid;Pwd=pswd
+Driver={SQL Server};Server=GRUPS2\SQLEXPRESS;Database=msdb;Trusted_Connection=Yes
+

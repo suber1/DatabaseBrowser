@@ -1,0 +1,100 @@
+<RebusDatabaseProviders>
+
+   <Provider>
+
+      <Name="Oracle" />
+      <OdbcConnStr="" />
+      <OdbcConnStrTrusted="" />
+      <OleDbConnStr="Provider=OraOLEDB.Oracle; Data Source={DS}; UserID={UID}; Password={PSWD}" />
+      <OleDbConnStrTrusted="Provider=OraOLEDB.Oracle; Data Source={DS}; OSAuthent=1; />
+      <DotNetConnStr="" />
+      <DotNetConnStrTrusted="" />
+      <FileExt="" />
+      <GUID="" />
+
+   </Provider>
+
+   <Provider>
+
+      <Name="Oracle (MS)" />
+      <OdbcConnStr="" />
+      <OdbcConnStrTrusted="" />
+      <OleDbConnStr="Provider=msdaora; Data Source={DS}; UserID={UID}; Password={PSWD}" />
+      <OleDbConnStrTrusted="Provider=msdaora; Data Source={DS}; Persist Security Info=False; Integrated Security=Yes; />
+      <DotNetConnStr="" />
+      <DotNetConnStrTrusted="" />
+      <FileExt="" />
+      <GUID="" />
+
+   </Provider>
+
+</RebusDatabaseProviders>
+
+
+
+
+New
+
+Name = Oracle
+OdbcConnStr = 
+OdbcConnStrTrusted = 
+OleDbConnStr = Provider=OraOLEDB.Oracle; Data Source={DS}; UserID={UID}; Password={PSWD}
+OleDbConnStrTrusted = Provider=OraOLEDB.Oracle; Data Source={DS}; OSAuthent=1;
+DotNetConnStr =
+DotNetConnStrTrusted = 
+FileExt =
+GUID = 
+
+
+
+
+
+
+
+New
+
+char 221 222
+
+
+Name = Oracle (MS)
+OdbcConnStr =
+OdbcConnStrTrusted = 
+OleDbConnStr = Provider=msdaora; Data Source={DS}; UserID={UID}; Password={PSWD}
+OleDbConnStrTrusted = Provider=msdaora; Data Source={DS}; Persist Security Info=False; Integrated Security=Yes;
+DotNetConnStr = 
+DotNetConnStrTrusted = 
+FileExt = 
+GUID = 
+
+
+
+
+
+xNewChild  - future enhancement, coming later... (again, line-based, but would require adding the complexity of recognizing such, but therefore violating the "rules" of the "language"
+
+
+
+
+
+Goals of this new "script language".
+
+The "language", "New", truly simple, easy to read.
+There is no need to worry about semantics - you could actually type all kinds on shit comments just like this, and the interpreter shall not care, even if you use "=", the only key character, which shall do nothing more than to make your stupid commensts a "property"
+The language is "sequential" meaning read top-to-bottom, left-to-right.
+
+
+ONLY ONE KEYWORD: "NEW".
+ONE special character "="  - tired of most of that shit...use any other character you like, no "opening" and "closing" (which completely undermines "readable"), don't have to "remember" semantics for "New". Use all ASCIIs up to 127.
+BUT "=" will drive shit - starting the path toward potentially other specials...more on that later - still being examined by Lee's brain
+
+Line breaks rule.
+Spaces/tabs insignificant.
+Case insignificant.
+Extensible (down the road...more on that later...but the key is, if you only need the basics, not straddled with esoteric semantics if you don't need them.)
+Each and every "NEW" object is unique...simple access to property values.
+Extensibility is where sub-properties are applied...yet to be determined - BUT SIMPLE AND MAKING SENS!
+You can keep it flat (covers 80%+ of usage, I'm guessing), but can go beyond, BUT ONLY WHEN NEEDED!
+Not intended to replace XML (but perhaps XML-Hell).
+
+
+

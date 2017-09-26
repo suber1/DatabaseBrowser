@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:sql="http://schemas.microsoft.com/wix/SqlExtension">
+    <Product Name="Rebus Database Browser" Id="00F712C9-0898-4659-98E5-B4B48055BCF4" UpgradeCode="F53D971F-9BF6-4817-8103-CB7A22D940FD" Language="1033" Codepage="1252" Version="6.5.0" Manufacturer="rebusX Software">
+        <Package Id="*" Keywords="Installer" Description="Rebus Database Browser - Installer" InstallScope="perUser" Comments="Rebus Database Browser" Manufacturer="rebusX Software" InstallerVersion="100" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
+        <Media Id="1" Cabinet="RebusSQL.cab" EmbedCab="yes" />
+
+		<Condition Message='This application requires Windows 7 or higher.'>
+			VersionNT<![CDATA[>=601]]>
+		</Condition>
+		
+        <PropertyRef Id="NETFRAMEWORK45" />
+        <Condition Message="This setup requires the .NET Framework 4.5 or later installed."><![CDATA[Installed OR NETFRAMEWORK45]]></Condition>
+
+		<!-- this is how you get a customized icon on the Uninstall or Change Programs in Windows (default is the standard windows MSI package icon) -->
+		<Property Id='ARPCOMMENTS'>Browse databases from virtually any vendor.</Property>
+		<Property Id='ARPPRODUCTICON'>RebusSQL6.exe</Property>
+		<Icon Id="RebusSQL6.exe" SourceFile="RebusSQL32.ico" />
+		<Icon Id="FindTextIcon.exe" SourceFile="FindText.exe" />
+	
+		<Property Id="ARPNOREPAIR" Value="yes" Secure="yes" /> 
+		<Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
+		
+		<Property Id="OPERATIONMODE" Secure="yes" />
+		
+        <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+        <!--WixVariable Id="WixUIBannerBmp" Value="CetaniNotifier\bin\release\cetaniInstallerBanner.bmp" /-->
+        <!--WixVariable Id="WixUIDialogBmp" Value="CetaniNotifier\bin\release\cetaniInstallFirstPage.bmp" /-->
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Id="Rebus" Name="Rebus">
+                    <Directory Id="INSTALLDIR" Name="DataBrowser">
+                        <Component Id="MainExecutable" Guid="B5B0B6E8-C541-4D95-949C-48657409B37C">
+                            <File Id="RebusSQLEXE" Name="RebusSQL6.exe" DiskId="1" Source="RebusSQL6.exe" KeyPath="yes">
+                                <Shortcut Id="startmenuEXE" Directory="ProgramMenuDir" Name="Rebus Database Browser" WorkingDirectory="INSTALLDIR" Icon="RebusSQL6.exe" IconIndex="0" Advertise="yes" />
+                                <Shortcut Id="desktopEXE" Directory="DesktopFolder" Name="Rebus Database Browser" WorkingDirectory="INSTALLDIR" Icon="RebusSQL6.exe" IconIndex="0" Advertise="yes" />
+                            </File>
+                        </Component>
+                        <Component Id="DLL_data" DiskId="1" KeyPath="yes" Guid="D5DFC517-C44B-4D2D-8D7C-99CEB120C19D">
+                            <File Id="file_DataDLL" Checksum="yes" Source="RebusData6.dll" />
+                        </Component>
+                        <Component Id="DLL_adox" DiskId="1" KeyPath="yes" Guid="04D9128D-985A-47EE-8321-3E4E944FDD41">
+                            <File Id="adoxDLL" Checksum="yes" Source="Interop.ADOX.dll" />
+                        </Component>
+                        <Component Id="Provs_Txt" DiskId="1" KeyPath="yes" Guid="591C91E2-EDBE-47C6-AAAA-90456531CF69">
+                            <File Id="ProvsTxt" Checksum="yes" Source="RebusDatabaseProviders.txt" />
+                        </Component>
+						
+									
+						<Directory Id="DIR_UTIL" Name="Util">
+							<Component Id="comp_Util_0" Guid="785A9BF9-A3C7-4723-ACB3-CF3F047E47C6">
+								<File Id="file_Util_0" Source="FindText.exe" KeyPath="yes">
+									 <Shortcut Id="FindTextExe" Directory="ProgramMenuDir" Name="Find Text Utility" WorkingDirectory="DIR_UTIL" Icon="FindTextIcon.exe" IconIndex="0" Advertise="yes" />
+								</File>
+							</Component>
+						</Directory>
+			
+
+                    </Directory>
+                </Directory>
+            </Directory>
+            <Directory Id="ProgramMenuFolder" Name="Programs">
+                <Directory Id="ProgramMenuDir" Name="Rebus Database Browser">
+                    <Component Id="ProgramMenuDir" Guid="B076DEDD-1AED-4DD5-A6F3-CC285BDE0D7D">
+                        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes" />
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="DesktopFolder" Name="Desktop" />
+
+			
+			
+			
+			
+			<Component Id="OperationMode1" Guid="E3B80145-9339-4756-9C92-70B6E53303FA">
+				<Condition>OPERATIONMODE = 1</Condition>
+				<RegistryKey Root="HKCU" Key="Software\[Manufacturer]\[ProductName]">
+					<RegistryValue Name="OperationMode" Value="1" Type="integer" KeyPath="yes" />
+				</RegistryKey>
+			</Component>
+			
+			<Component Id="OperationMode0" Guid="66B94625-CD4B-4EEB-A783-094DAEE7C5F0">
+				<Condition>OPERATIONMODE &lt;&gt; 1</Condition>
+				<RegistryKey Root="HKCU" Key="Software\[Manufacturer]\[ProductName]">
+					<RegistryValue Name="OperationMode" Value="0" Type="integer" KeyPath="yes" />
+				</RegistryKey>
+			</Component>
+			
+			
+			
+			
+        </Directory>
+		
+        <Feature Id="Complete" Description="Rebus Database Browswer" Title="Install" Display="hidden" Level="1">
+            <ComponentRef Id="MainExecutable" />
+            <ComponentRef Id="DLL_data" />
+            <ComponentRef Id="DLL_adox" />
+            <ComponentRef Id="Provs_Txt" />
+            <ComponentRef Id="ProgramMenuDir" />
+			<ComponentRef Id="comp_Util_0" />
+			<ComponentRef Id="OperationMode1" />
+			<ComponentRef Id="OperationMode0" />
+        </Feature>
+        
+		<Property Id="InstalledDir" Value="want to put INSTALLDIR here" />
+		
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+        <Property Id="LAUNCH_ON_EXIT" Value="no" />
+		<Property Id="NTAUTHSYS" Value="[NT AUTHORITY\SYSTEM]" />
+
+        <UI Id="WixUI_InstallDir">
+            <TextStyle Id="WixUI_Font_Normal" FaceName="Lucida Sans" Size="8" />
+            <TextStyle Id="WixUI_Font_Bigger" FaceName="Lucida Sans" Size="11" />
+            <TextStyle Id="WixUI_Font_Title" FaceName="Lucida Sans" Size="9" Bold="yes" />
+            <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+            <Property Id="WixUI_Mode" Value="InstallDir" />
+			
+			
+			
+			<TextStyle Id="Hdr2" FaceName="Lucida Sans" Bold="yes" Size="10" />
+			
+			
+            <Dialog Id="SettingsDlg" X="50" Y="50" Width="370" Height="270" Title="[ProductName] Setup">
+                <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="&amp;Next" TabSkip="no" Default="yes">
+                    <Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+                </Control>
+                <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="&amp;Back" TabSkip="no">
+                    <Publish Event="NewDialog" Value="InstallDirDlg">1</Publish>
+                </Control>
+                <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Text="Cancel" TabSkip="no" Cancel="yes">
+                    <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+                </Control>
+				
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="WixUI_Bmp_Banner" TabSkip="no" Disabled="yes" />
+                <Control Id="Title" Type="Text" X="15" Y="6" Width="345" Height="15" Text="{\Hdr2}Settings" TabSkip="yes" Transparent="yes" NoPrefix="yes" />
+                <!--Control Id="Description" Type="Text" X="25" Y="23" Width="338" Height="15" Text="..." TabSkip="yes" Transparent="yes" NoPrefix="yes" /-->
+                <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" TabSkip="yes" Disabled="yes" />
+                <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" TabSkip="yes" Disabled="yes" />
+				
+				<Control Id="AdminMode" Type="CheckBox" X="60" Y="120" Width="290" Height="17" Property="OPERATIONMODE" CheckBoxValue="1" Text="Server/Admin mode" />
+				<Control Id="AdminModeHelp" Type="Text" X="82" Y="132" Width="260" Height="17" Text="(allows enabling/disabling of message receiving)" />
+
+            </Dialog>
+			
+			
+			
+			
+			
+			
+			
+			
+            <DialogRef Id="BrowseDlg" />
+            <DialogRef Id="DiskCostDlg" />
+            <DialogRef Id="ErrorDlg" />
+            <DialogRef Id="FatalError" />
+            <DialogRef Id="FilesInUse" />
+            <DialogRef Id="MsiRMFilesInUse" />
+            <DialogRef Id="PrepareDlg" />
+            <DialogRef Id="ProgressDlg" />
+            <DialogRef Id="ResumeDlg" />
+            <DialogRef Id="UserExit" />
+            <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+            <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+			
+            <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+            <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">NOT Installed</Publish>
+
+            <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+            <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+
+            <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">LicenseAccepted = "1"</Publish>
+			
+			
+			
+			
+            <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+            <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+            <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+            <Publish Dialog="InstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+            <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="SettingsDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+            <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+            <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+			
+			
+			
+			
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="SettingsDlg" Order="1">NOT Installed</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed AND NOT PATCH</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">Installed AND PATCH</Publish>
+			
+			
+			
+			
+			
+            <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+            <!--Property Id="ARPNOMODIFY" Value="1" /-->
+        </UI>
+        <UIRef Id="WixUI_Common" />
+		
+		<CustomAction Id="CA_Set_WIXUI_EXITDIALOGOPTIONALTEXT" Property="WIXUI_EXITDIALOGOPTIONALTEXT" Value="Thank you for installing [ProductName] into [InstalledDir]."/>
+		
+		<!--CustomAction Id="BeforeUninstall01" Directory="INSTALLDIR" ExeCommand="[SystemFolder]cmd.exe /C start CetaniConfig.exe /backupandexit /em" Return="ignore" />
+		<InstallExecuteSequence>
+			<Custom Action="BeforeUninstall01" After="InstallInitialize">REMOVE="ALL"</Custom>
+		</InstallExecuteSequence-->
+
+		<InstallUISequence>
+			<Custom Action="CA_Set_WIXUI_EXITDIALOGOPTIONALTEXT" After="FindRelatedProducts">NOT Installed</Custom>
+		</InstallUISequence>
+		
+    </Product>
+</Wix>

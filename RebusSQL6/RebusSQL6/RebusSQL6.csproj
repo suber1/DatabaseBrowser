@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{10971F0C-4C6C-4A2A-B28D-CB66712DBB9E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RebusSQL6</RootNamespace>
+    <AssemblyName>RebusSQL6</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="dlgChooseSQL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgChooseSQL.Designer.cs">
+      <DependentUpon>dlgChooseSQL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBaseMDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBaseMDI.Designer.cs">
+      <DependentUpon>frmBaseMDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChildDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChildDlg.Designer.cs">
+      <DependentUpon>frmChildDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChooseDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChooseDB.Designer.cs">
+      <DependentUpon>frmChooseDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFK.Designer.cs">
+      <DependentUpon>frmFK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInfo.Designer.cs">
+      <DependentUpon>frmInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmManageExtProvs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManageExtProvs.Designer.cs">
+      <DependentUpon>frmManageExtProvs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMasterChildLink.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMasterChildLink.Designer.cs">
+      <DependentUpon>frmMasterChildLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpenDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpenDB.Designer.cs">
+      <DependentUpon>frmOpenDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOptions.Designer.cs">
+      <DependentUpon>frmOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPickOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPickOne.Designer.cs">
+      <DependentUpon>frmPickOne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSQL2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSQL2.Designer.cs">
+      <DependentUpon>frmSQL2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSQLprops.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSQLprops.Designer.cs">
+      <DependentUpon>frmSQLprops.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTbls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTbls.Designer.cs">
+      <DependentUpon>frmTbls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetFksFromDb.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Migrator.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SupportingClasses.cs" />
+    <Compile Include="TextFinder.cs" />
+    <EmbeddedResource Include="dlgChooseSQL.resx">
+      <DependentUpon>dlgChooseSQL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBaseMDI.resx">
+      <DependentUpon>frmBaseMDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChildDlg.resx">
+      <DependentUpon>frmChildDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChooseDB.resx">
+      <DependentUpon>frmChooseDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFK.resx">
+      <DependentUpon>frmFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInfo.resx">
+      <DependentUpon>frmInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmManageExtProvs.resx">
+      <DependentUpon>frmManageExtProvs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMasterChildLink.resx">
+      <DependentUpon>frmMasterChildLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpenDB.resx">
+      <DependentUpon>frmOpenDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOptions.resx">
+      <DependentUpon>frmOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPickOne.resx">
+      <DependentUpon>frmPickOne.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSQL2.resx">
+      <DependentUpon>frmSQL2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSQLprops.resx">
+      <DependentUpon>frmSQLprops.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTbls.resx">
+      <DependentUpon>frmTbls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RebusData6\RebusData6\RebusData6.csproj">
+      <Project>{d5b5c5f7-f325-4547-9ec9-17f9b41c2861}</Project>
+      <Name>RebusData6</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RebusSQL6.sln" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RebusSQL42.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RebusSQL42b.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SQL.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ToLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PlusSql.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PlusSql_trans2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SaveSQLS_transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RestoreSQLs_transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="floppy.png" />
+    <None Include="Resources\window_plusC.png" />
+    <None Include="Resources\db_closeB.png" />
+    <None Include="Resources\window_plusB.png" />
+    <None Include="Resources\window_plus.png" />
+    <None Include="Resources\dbs3.png" />
+    <None Include="Resources\db_close.png" />
+    <None Include="Resources\dbs.png" />
+    <None Include="Resources\hdd.png" />
+    <None Include="Resources\db4plus.png" />
+    <None Include="Resources\db4.png" />
+    <None Include="Resources\floppy1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

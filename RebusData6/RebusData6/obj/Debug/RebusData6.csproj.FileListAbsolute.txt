@@ -1,0 +1,32 @@
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\bin\Debug\RebusData6.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\bin\Debug\RebusData6.pdb
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.xml
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADODB.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADOR.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADOX.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.csproj.ResolveComReference.cache
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.dll
+C:\Users\Lee\Documents\Visual Studio 2013\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.pdb
+C:\Lee\RebusSQL6\RebusData6\RebusData6\bin\Debug\RebusData6.dll
+C:\Lee\RebusSQL6\RebusData6\RebusData6\bin\Debug\RebusData6.pdb
+C:\Lee\RebusSQL6\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.dll
+C:\Lee\RebusSQL6\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.xml
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.csprojResolveAssemblyReference.cache
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADODB.dll
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADOR.dll
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADOX.dll
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.csproj.ResolveComReference.cache
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.dll
+C:\Lee\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.pdb
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\bin\Debug\RebusData6.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\bin\Debug\RebusData6.pdb
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.xml
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.csprojResolveAssemblyReference.cache
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADODB.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADOR.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\Interop.ADOX.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.csproj.ResolveComReference.cache
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.dll
+C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusData6\RebusData6\obj\Debug\RebusData6.pdb
