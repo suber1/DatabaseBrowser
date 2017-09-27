@@ -25,7 +25,6 @@ namespace RebusSQL6
 
         private void frmBaseMDI_Enter(object sender, EventArgs e)
         {
-            //string xs = "Carmel, Indiana SUCKS!";
             frmMain xoMDIParent = (frmMain)this.MdiParent;
             xoMDIParent.RefreshChildWindowList();
         }
