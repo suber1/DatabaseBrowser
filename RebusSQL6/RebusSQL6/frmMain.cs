@@ -1346,7 +1346,7 @@ namespace RebusSQL6
                     }
                     xoFrm.Show();
                     if (xbFocus) xoFrm.FocusSQL();
-                    xoDB = null;                // KEEP AN EYE ON THIS FUCK!
+                    xoDB = null;
                 }
                 else
                 {
