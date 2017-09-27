@@ -2576,7 +2576,7 @@ namespace RebusSQL6
 
         private void grd_ColumnSortModeChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            //string xs = "fuck";
+            //string xs = "";
         }
 
         private void grd_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
