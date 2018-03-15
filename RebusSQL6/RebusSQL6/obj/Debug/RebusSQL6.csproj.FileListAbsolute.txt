@@ -84,3 +84,4 @@ C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debu
 C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmTbls.resources
 C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.Properties.Resources.resources
 C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csproj.GenerateResource.Cache
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csprojResolveAssemblyReference.cache

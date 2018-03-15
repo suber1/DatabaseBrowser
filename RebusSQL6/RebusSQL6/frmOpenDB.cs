@@ -63,6 +63,7 @@ namespace RebusSQL6
             //moDB = GetDB();
             //ProviderFill();
             moDummyDB = new DB();
+            moDummyDB.CommandTimeoutSeconds = Global.TimeoutSecs;
             ConnTypeFill();
         }
 
@@ -589,6 +590,7 @@ namespace RebusSQL6
         {
             //string xsErrMsg = "";
             DB xoDB = new DB();
+            xoDB.CommandTimeoutSeconds = Global.TimeoutSecs;
 
             //string xsExternalProvidersXMLFile = Application.StartupPath + @"\" + Global.ExternalDbProvidersFile;
             //xoDB.AddExternalProviders(xsExternalProvidersXMLFile, out xsErrMsg);
@@ -697,7 +699,7 @@ namespace RebusSQL6
         private void UpdateHistory()
         {
             //History (histType INTEGER, histValue CHAR(255))";
-            string xsSQL = "SELECT histValue FROM History WHERE histType = 1";
+            //string xsSQL = "SELECT histValue FROM History WHERE histType = 1";
             // link to app's db and process accordingly...
             // thisapp
         }

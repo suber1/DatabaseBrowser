@@ -29,6 +29,8 @@ namespace RebusSQL6
         public static char gccQT = Convert.ToChar(34);
 
         public static int SelectTop = 1000;
+        public static int TimeoutSecs = 120;
+        public static bool TablesInTreeview = false;
 
         public static string NullToString(object po)
         {
@@ -44,6 +46,25 @@ namespace RebusSQL6
             return (xs);
         }
 
+        public static string BracketizeTableName(string psTbl)
+        {
+            string xsTbl = psTbl;
+
+            if (xsTbl.IndexOf("[") < 0)
+            {
+                int xi = xsTbl.IndexOf(".");
+                if (xi > 0 && xi < xsTbl.Length - 1)
+                {
+                    xsTbl = "[" + xsTbl.Substring(0, xi) + "].[" + xsTbl.Substring(xi + 1) + "]";
+                }
+                else
+                {
+                    xsTbl = "[" + xsTbl + "]";
+                }
+            }
+
+            return (xsTbl);
+        }
         public static bool RetrieveColumnWidths(List<string> psCaption, out List<int> piWidth, out string psErrMsg)
         {
             string xsSection = "ColumnSize";

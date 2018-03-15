@@ -132,10 +132,10 @@
             this.pgFile.Controls.Add(this.btnShowTable);
             this.pgFile.Controls.Add(this.btnNewSQLwindow);
             this.pgFile.Controls.Add(this.btnNewDB);
-            this.pgFile.Location = new System.Drawing.Point(4, 27);
+            this.pgFile.Location = new System.Drawing.Point(4, 24);
             this.pgFile.Name = "pgFile";
-            this.pgFile.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.pgFile.Size = new System.Drawing.Size(1213, 110);
+            this.pgFile.Padding = new System.Windows.Forms.Padding(3);
+            this.pgFile.Size = new System.Drawing.Size(1213, 113);
             this.pgFile.TabIndex = 0;
             this.pgFile.Text = "Database";
             this.pgFile.UseVisualStyleBackColor = true;
@@ -147,7 +147,7 @@
             this.drpGrps.FormattingEnabled = true;
             this.drpGrps.Location = new System.Drawing.Point(945, 47);
             this.drpGrps.Name = "drpGrps";
-            this.drpGrps.Size = new System.Drawing.Size(195, 24);
+            this.drpGrps.Size = new System.Drawing.Size(195, 22);
             this.drpGrps.TabIndex = 18;
             this.drpGrps.SelectedIndexChanged += new System.EventHandler(this.drpGrps_SelectedIndexChanged);
             // 
@@ -182,7 +182,7 @@
             this.drpViews2.FormattingEnabled = true;
             this.drpViews2.Location = new System.Drawing.Point(945, 21);
             this.drpViews2.Name = "drpViews2";
-            this.drpViews2.Size = new System.Drawing.Size(246, 24);
+            this.drpViews2.Size = new System.Drawing.Size(246, 22);
             this.drpViews2.TabIndex = 15;
             this.drpViews2.SelectedIndexChanged += new System.EventHandler(this.drpViews2_SelectedIndexChanged);
             // 
@@ -245,6 +245,7 @@
             this.btnShowTable.Text = "Show Database Tables";
             this.btnShowTable.UseVisualStyleBackColor = true;
             this.btnShowTable.Click += new System.EventHandler(this.btnShowTable_Click);
+            this.btnShowTable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowTable_MouseUp);
             // 
             // btnNewSQLwindow
             // 
@@ -282,9 +283,9 @@
             this.pgWindows.Controls.Add(this.btnTileHorz);
             this.pgWindows.Controls.Add(this.btnTileVert);
             this.pgWindows.Controls.Add(this.btnCascade);
-            this.pgWindows.Location = new System.Drawing.Point(4, 27);
+            this.pgWindows.Location = new System.Drawing.Point(4, 24);
             this.pgWindows.Name = "pgWindows";
-            this.pgWindows.Size = new System.Drawing.Size(1213, 110);
+            this.pgWindows.Size = new System.Drawing.Size(1213, 113);
             this.pgWindows.TabIndex = 3;
             this.pgWindows.Text = "SQLs";
             this.pgWindows.UseVisualStyleBackColor = true;
@@ -305,7 +306,7 @@
             this.drpWindows.FormattingEnabled = true;
             this.drpWindows.Location = new System.Drawing.Point(546, 26);
             this.drpWindows.Name = "drpWindows";
-            this.drpWindows.Size = new System.Drawing.Size(450, 26);
+            this.drpWindows.Size = new System.Drawing.Size(450, 23);
             this.drpWindows.TabIndex = 12;
             this.drpWindows.SelectedIndexChanged += new System.EventHandler(this.drpWindows_SelectedIndexChanged);
             // 
@@ -359,9 +360,9 @@
             this.pgOpts.Controls.Add(this.btnOptions);
             this.pgOpts.Controls.Add(this.btnExtProvs);
             this.pgOpts.Controls.Add(this.btnODBC);
-            this.pgOpts.Location = new System.Drawing.Point(4, 27);
+            this.pgOpts.Location = new System.Drawing.Point(4, 24);
             this.pgOpts.Name = "pgOpts";
-            this.pgOpts.Size = new System.Drawing.Size(1213, 110);
+            this.pgOpts.Size = new System.Drawing.Size(1213, 113);
             this.pgOpts.TabIndex = 2;
             this.pgOpts.Text = "Options";
             this.pgOpts.UseVisualStyleBackColor = true;
@@ -402,9 +403,9 @@
             // pgMisc
             // 
             this.pgMisc.Controls.Add(this.btnAbout);
-            this.pgMisc.Location = new System.Drawing.Point(4, 27);
+            this.pgMisc.Location = new System.Drawing.Point(4, 24);
             this.pgMisc.Name = "pgMisc";
-            this.pgMisc.Size = new System.Drawing.Size(1213, 110);
+            this.pgMisc.Size = new System.Drawing.Size(1213, 113);
             this.pgMisc.TabIndex = 4;
             this.pgMisc.Text = "Misc";
             this.pgMisc.UseVisualStyleBackColor = true;
@@ -427,7 +428,7 @@
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1221, 664);
             this.Controls.Add(this.panel1);

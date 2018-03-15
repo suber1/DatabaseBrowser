@@ -92,6 +92,10 @@
     <Compile Include="frmChooseDB.Designer.cs">
       <DependentUpon>frmChooseDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="dlgFilter.cs" />
+    <Compile Include="dlgFilter.Designer.cs">
+      <DependentUpon>dlgFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmFK.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +185,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmChooseDB.resx">
       <DependentUpon>frmChooseDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgFilter.resx">
+      <DependentUpon>dlgFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFK.resx">
       <DependentUpon>frmFK.cs</DependentUpon>

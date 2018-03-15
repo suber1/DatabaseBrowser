@@ -49,7 +49,7 @@
             this.tstGetRubyStyleFKs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripShowMasterChildInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.exportToCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToTSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuToJSON = new System.Windows.Forms.ToolStripMenuItem();
             this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
@@ -57,6 +57,7 @@
             this.tsmLinkChild = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmDateTimeToLongFormat = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmDateTimeFormatString = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pgData = new System.Windows.Forms.TabPage();
             this.grd = new System.Windows.Forms.DataGridView();
@@ -77,7 +78,6 @@
             this.tmrRowChange = new System.Windows.Forms.Timer(this.components);
             this.prtDoc = new System.Drawing.Printing.PrintDocument();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmDateTimeFormatString = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tabSQL.SuspendLayout();
             this.pgSQL.SuspendLayout();
@@ -165,7 +165,7 @@
             this.tstGetRubyStyleFKs,
             this.toolStripShowMasterChildInfo,
             this.toolStripMenuItem3,
-            this.exportToCSVToolStripMenuItem,
+            this.exportToTSVToolStripMenuItem,
             this.mnuToJSON,
             this.printToolStripMenuItem,
             this.toolStripMenuItem4,
@@ -176,7 +176,7 @@
             this.tsmDateTimeFormatString,
             this.infoToolStripMenuItem});
             this.popupMenu.Name = "popupMenu";
-            this.popupMenu.Size = new System.Drawing.Size(215, 458);
+            this.popupMenu.Size = new System.Drawing.Size(215, 436);
             this.popupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.popupMenu_Opening);
             // 
             // enableEditingToolStripMenuItem
@@ -270,12 +270,12 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(211, 6);
             // 
-            // exportToCSVToolStripMenuItem
+            // exportToTSVToolStripMenuItem
             // 
-            this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
-            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.exportToCSVToolStripMenuItem.Text = "Export to CSV...";
-            this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
+            this.exportToTSVToolStripMenuItem.Name = "exportToTSVToolStripMenuItem";
+            this.exportToTSVToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.exportToTSVToolStripMenuItem.Text = "Export to TSV...";
+            this.exportToTSVToolStripMenuItem.Click += new System.EventHandler(this.exportToTSVToolStripMenuItem_Click);
             // 
             // mnuToJSON
             // 
@@ -321,6 +321,13 @@
             this.tsmDateTimeToLongFormat.Size = new System.Drawing.Size(214, 22);
             this.tsmDateTimeToLongFormat.Text = "DateTimes Long Format";
             this.tsmDateTimeToLongFormat.Click += new System.EventHandler(this.tsmDateTimeToLongFormat_Click);
+            // 
+            // tsmDateTimeFormatString
+            // 
+            this.tsmDateTimeFormatString.Name = "tsmDateTimeFormatString";
+            this.tsmDateTimeFormatString.Size = new System.Drawing.Size(214, 22);
+            this.tsmDateTimeFormatString.Text = "DateTimes Format String...";
+            this.tsmDateTimeFormatString.Click += new System.EventHandler(this.tsmDateTimeFormatString_Click);
             // 
             // infoToolStripMenuItem
             // 
@@ -502,13 +509,6 @@
             // 
             this.prtDoc.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.prtDoc_PrintPage);
             // 
-            // tsmDateTimeFormatString
-            // 
-            this.tsmDateTimeFormatString.Name = "tsmDateTimeFormatString";
-            this.tsmDateTimeFormatString.Size = new System.Drawing.Size(214, 22);
-            this.tsmDateTimeFormatString.Text = "DateTimes Format String...";
-            this.tsmDateTimeFormatString.Click += new System.EventHandler(this.tsmDateTimeFormatString_Click);
-            // 
             // frmSQL2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -520,6 +520,7 @@
             this.FormType = RebusSQL6.MDIType.SQL;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "frmSQL2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Query/Command";
@@ -527,6 +528,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSQL2_FormClosing);
             this.Load += new System.EventHandler(this.frmSQL2_Load);
             this.Shown += new System.EventHandler(this.frmSQL2_Shown);
+            this.ResizeEnd += new System.EventHandler(this.frmSQL2_ResizeEnd);
             this.DoubleClick += new System.EventHandler(this.frmSQL2_DoubleClick);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmSQL2_KeyUp);
             this.panel1.ResumeLayout(false);
@@ -572,7 +574,7 @@
         private System.Windows.Forms.ContextMenuStrip popupMenu;
         private System.Windows.Forms.ToolStripMenuItem enableEditingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportToCSVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToTSVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;

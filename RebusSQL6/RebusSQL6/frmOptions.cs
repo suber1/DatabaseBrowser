@@ -14,13 +14,15 @@ namespace RebusSQL6
     {
         public bool OK { get; set; }
 
-        public int Top { get; set; }
+        public int SelectTop { get; set; }
+        public int TimeoutSecs { get; set; }
 
 
         public frmOptions()
         {
             InitializeComponent();
-            Top = 1000;
+            SelectTop = 1000;
+            TimeoutSecs = 120;
             OK = false;
         }
 
@@ -31,7 +33,7 @@ namespace RebusSQL6
             try
             {
                 int xi = Convert.ToInt32(txtTop.Text.Trim());
-                if (xi >= 0) Top = xi; else xbErr = true;
+                if (xi >= 0) SelectTop = xi; else xbErr = true;
             }
             catch { xbErr = true; }
 
@@ -41,14 +43,28 @@ namespace RebusSQL6
             }
             else
             {
-                OK = true;
-                this.Hide();
+                try
+                {
+                    int xi = Convert.ToInt32(txtSecs.Text.Trim());
+                    if (xi >= 0) TimeoutSecs = xi; else xbErr = true;
+                }
+                catch { xbErr = true; }
+                if (xbErr)
+                {
+                    Global.ShowMessage("Invalid command timeout value.", this.Text);
+                }
+                else
+                {
+                    OK = true;
+                    this.Hide();
+                }
             }
         }
 
         private void frmOptions_Shown(object sender, EventArgs e)
         {
-            txtTop.Text = Top.ToString().Trim();
+            txtTop.Text = SelectTop.ToString().Trim();
+            txtSecs.Text = TimeoutSecs.ToString().Trim();
         }
     }
 }

@@ -42,8 +42,6 @@ using System.Xml;
 //
 // the latest, vastly extended from the 2014-2105 rewrite, April-September 2015
 //
-// tweaks, tweaks and more tweaks 2016-2017 (to this day, use the tool often, so continually adding bells and whistles)
-//
 
 
 namespace RebusData6
@@ -378,7 +376,7 @@ namespace RebusData6
         public List<DatabaseProvider> Providers { get { return moProviders; } }
         private List<DatabaseProvider> moProviders;
 
-
+        public int CommandTimeoutSeconds { get; set; }
 
 
         /// <summary>
@@ -466,6 +464,7 @@ namespace RebusData6
         //
         public DB()
         {
+            CommandTimeoutSeconds = 120;
             moDC = new Connection();
             mrSQLParams = new List<SQLparam>(0);
             SetIntrinsicProviders();
@@ -1940,12 +1939,12 @@ namespace RebusData6
                                 }
                                 moDC.moCmdOLE.CommandText = xsSQL;
                                 moDC.moCmdOLE.CommandType = CommandType.Text;
-                                moDC.moCmdOLE.CommandTimeout = 0;
+                                moDC.moCmdOLE.CommandTimeout = CommandTimeoutSeconds;
                                 moDC.moCmdOLE.Connection = moDC.moConnOLE;
                                 if (xbUsingDataTable)   //(poTbl != null)
                                 {
                                     moDC.moAdapterOLE = new OleDbDataAdapter(xsSQL, xs);
-                                    moDC.moAdapterOLE.SelectCommand.CommandTimeout = 0;
+                                    moDC.moAdapterOLE.SelectCommand.CommandTimeout = CommandTimeoutSeconds;
                                     moDC.moBldrOLE = new OleDbCommandBuilder(moDC.moAdapterOLE);
                                     //moDC.moCmdOLE.CommandTimeout = 0;
                                     moDC.moAdapterOLE.Fill(poTbl);
@@ -2007,7 +2006,7 @@ namespace RebusData6
 
                                 moDC.moCommand.CommandText = xsSQL;
                                 moDC.moCommand.CommandType = CommandType.Text;
-                                moDC.moCommand.CommandTimeout = 0;
+                                moDC.moCommand.CommandTimeout = CommandTimeoutSeconds;
                                 moDC.moCommand.Connection = moDC.moConn;
 
                                 if (pbAsynchronously)
@@ -2027,7 +2026,7 @@ namespace RebusData6
                                     if (xbUsingDataTable)
                                     {
                                         moDC.moAdapter = new SqlDataAdapter(xsSQL, xs);
-                                        moDC.moAdapter.SelectCommand.CommandTimeout = 0;
+                                        moDC.moAdapter.SelectCommand.CommandTimeout = CommandTimeoutSeconds;
                                         moDC.moBldr = new SqlCommandBuilder(moDC.moAdapter);
                                         moDC.moAdapter.Fill(poTbl);
                                         miLastRecsAffected = poTbl.Rows.Count;
@@ -2657,9 +2656,16 @@ namespace RebusData6
                                     else
                                     {
                                         xbIsActionSQL = IsActionKeyWord(xsKeyWord);
+                                        if (xbIsActionSQL)
+                                        {
+                                            if (xiPos + 1 < psSQL.Length)
+                                            {
+                                                char xc = psSQL[xiPos + 1];
+                                                if (xc != '\t' && xc != '\r' && xc != '\n' && xc != ' ')
+                                                    xbIsActionSQL = false;
+                                            }
+                                        }
                                     }
-
-
                                     xiKeyWordStartPos = -1;
                                     xsKeyWord = "";
                                 }
@@ -2794,6 +2800,41 @@ namespace RebusData6
 
         #endregion
 
+        public string SplitSchemaFromTableName(string psTable, out string psTableOnly)
+        {
+            string xsTable = psTable;
+            string xsSchema = "";
+
+            int xi = 0;
+            if (xsTable != null)
+            {
+                xsTable = xsTable.Trim();
+
+                xi = xsTable.IndexOf(".");
+                if (xi > 0 && xi < xsTable.Length - 1)
+                {
+                    xsSchema = DropSquareBrackets(xsTable.Substring(0, xi));
+                    xsTable = xsTable.Substring(xi + 1);
+                }
+                xsTable = DropSquareBrackets(xsTable);
+            }
+
+            psTableOnly = xsTable;
+            return (xsSchema);
+        }
+
+        public string DropSquareBrackets(string ps)
+        {
+            string xs = ps.Trim();
+            if (xs.Length >= 2)
+            {
+                if (xs[0] == '[' && xs[xs.Length - 1] == ']')
+                {
+                    xs = xs.Substring(1, xs.Length - 2);
+                }
+            }
+            return (xs);
+        }
 
         #region schemaStuff
         /// <summary>
@@ -2808,6 +2849,10 @@ namespace RebusData6
             List<string> xsStruc = null;
             msErrMsg = "";
             DataTable xoTable = null;
+            int xiColsFound = 0;
+
+            string xsTableNameOnly = "";
+            string xsSchemaName = SplitSchemaFromTableName(psTableName, out xsTableNameOnly);
 
             if (DatabaseIsOpen())
             {
@@ -2827,7 +2872,7 @@ namespace RebusData6
                     if (moDC.Provider.IsOracle)
                     {
                         xoTable = new DataTable();
-                        if (this.SQL("SELECT * FROM user_tab_columns WHERE table_name = '" + psTableName.ToUpper().Trim() + "'", xoTable))
+                        if (this.SQL("SELECT * FROM user_tab_columns WHERE table_name = '" + xsTableNameOnly.ToUpper().Trim() + "'", xoTable))
                         {
                             if (xoTable == null) xsErrMsg = "Data not found.";
                         }
@@ -2841,13 +2886,13 @@ namespace RebusData6
                         switch (moDC.meConnectivity)
                         {
                             case ConnectivityType.OleDB:
-                                xoTable = moDC.moConnOLE.GetSchema("Columns", new[] { xsDB, null, psTableName });
+                                xoTable = moDC.moConnOLE.GetSchema("Columns", new[] { xsDB, null, xsTableNameOnly });
                                 break;
                             case ConnectivityType.ODBC:
-                                xoTable = moDC.moConnODBC.GetSchema("Columns", new[] { xsDB, null, psTableName });
+                                xoTable = moDC.moConnODBC.GetSchema("Columns", new[] { xsDB, null, xsTableNameOnly });
                                 break;
                             default:
-                                xoTable = moDC.moConn.GetSchema("Columns", new[] { xsDB, null, psTableName });
+                                xoTable = moDC.moConn.GetSchema("Columns", new[] { xsDB, null, xsTableNameOnly });
                                 break;
                         }
                     }
@@ -2949,6 +2994,19 @@ namespace RebusData6
                 {
                     string xsLine = "";
                     xsStruc = new List<string>();
+                    int xiSchemaNameColm = -1;
+                    xsSchemaName = xsSchemaName.Trim();
+                    if (xsSchemaName.Length > 0)
+                    {
+                        for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
+                        {
+                            if (xoTable.Columns[xiCol].ColumnName.Trim().ToUpper() == "TABLE_SCHEMA")
+                            {
+                                xiSchemaNameColm = xiCol;
+                                break;
+                            }
+                        }
+                    }
                     for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
                     {
                         if (xiCol > 0) xsLine += "\t";
@@ -2957,13 +3015,30 @@ namespace RebusData6
                     xsStruc.Add(xsLine);
                     for (int xiRow = 0; xiRow < xoTable.Rows.Count; xiRow++)
                     {
-                        xsLine = "";
-                        for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
+                        bool xbOK = true;
+                        if (xiSchemaNameColm >= 0)
                         {
-                            if (xiCol > 0) xsLine += "\t";
-                            xsLine += xoTable.Rows[xiRow][xiCol].ToString();
+                            xbOK = false;
+                            var xv = xoTable.Rows[xiRow][xiSchemaNameColm];
+                            if (xv != null)
+                            {
+                                if (xv.ToString().Trim().ToUpper() == xsSchemaName.ToUpper())
+                                {
+                                    xbOK = true;
+                                }
+                            }
                         }
-                        xsStruc.Add(xsLine);
+                        if (xbOK)
+                        {
+                            xsLine = "";
+                            for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
+                            {
+                                if (xiCol > 0) xsLine += "\t";
+                                xsLine += xoTable.Rows[xiRow][xiCol].ToString();
+                            }
+                            xsStruc.Add(xsLine);
+                            xiColsFound++;
+                        }
                     }
                 }
 
@@ -2974,7 +3049,7 @@ namespace RebusData6
             {
                 if (xsErrMsg.Length == 0)
                 {
-                    if (xoTable.Rows.Count == 0) xsErrMsg = "Table " + psTableName + " not found in schema.";
+                    if (xoTable.Rows.Count == 0 || xiColsFound == 0) xsErrMsg = "Table " + psTableName + " not found in schema.";
                 }
             }
             xoTable = null;
@@ -3045,7 +3120,7 @@ namespace RebusData6
                         }
                         if (xsErrMsg.Length == 0)
                         {
-                            if (!DumpTableToCSV(xoTable, psOutFile.Trim())) xsErrMsg = msErrMsg;
+                            if (!DumpTableToTSV(xoTable, psOutFile.Trim())) xsErrMsg = msErrMsg;
                         }
                     }
                     else
@@ -3170,6 +3245,9 @@ namespace RebusData6
             msErrMsg = "";
             DataTable xoTable = null;
 
+            string xsTableNameOnly = "";
+            string xsSchemaName = SplitSchemaFromTableName(psTableName, out xsTableNameOnly);
+
             if (DatabaseIsOpen())
             {
                 if (IsConnectionClosed()) OpenTheConnection();
@@ -3178,6 +3256,7 @@ namespace RebusData6
             {
                 xsErrMsg = "Database is not open.";
             }
+
             if (msErrMsg.Length == 0 && xsErrMsg.Length == 0)
             {
                 //if (moDC.meBrand == Brand.MsAccess) xsDB = null;
@@ -3188,7 +3267,7 @@ namespace RebusData6
                     if (moDC.Provider.IsOracle)
                     {
                         xoTable = new DataTable();
-                        if (this.SQL("SELECT * FROM user_indexes WHERE table_name = '" + psTableName.Trim().ToUpper() + "'", xoTable))
+                        if (this.SQL("SELECT * FROM user_indexes WHERE table_name = '" + xsTableNameOnly.Trim().ToUpper() + "'", xoTable))
                         {
                             if (xoTable == null) xsErrMsg = "Indices not found.";
                         }
@@ -3204,13 +3283,13 @@ namespace RebusData6
                         switch (moDC.meConnectivity)
                         {
                             case ConnectivityType.OleDB:
-                                xoTable = moDC.moConnOLE.GetSchema("Indexes", new[] { xsDB, null, null, null, psTableName });       // this works for Access, SQL server
+                                xoTable = moDC.moConnOLE.GetSchema("Indexes", new[] { xsDB, null, null, null, xsTableNameOnly });       // this works for Access, SQL server
                                 break;
                             case ConnectivityType.ODBC:
-                                xoTable = moDC.moConnODBC.GetSchema("Indexes", new[] { xsDB, null, null, null, psTableName });
+                                xoTable = moDC.moConnODBC.GetSchema("Indexes", new[] { xsDB, null, null, null, xsTableNameOnly });
                                 break;
                             default:
-                                xoTable = moDC.moConn.GetSchema("Indexes", new[] { null, null, psTableName, null });
+                                xoTable = moDC.moConn.GetSchema("Indexes", new[] { null, null, xsTableNameOnly, null });
                                 break;
                         }
                     }
@@ -3224,21 +3303,54 @@ namespace RebusData6
                 {
                     string xsLine = "";
                     xsStruc = new List<string>();
+
+                    int xiSchemaNameColm = -1;
+                    xsSchemaName = xsSchemaName.Trim();
+                    if (xsSchemaName.Length > 0)
+                    {
+                        for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
+                        {
+                            if (xoTable.Columns[xiCol].ColumnName.Trim().ToUpper() == "TABLE_SCHEMA")
+                            {
+                                xiSchemaNameColm = xiCol;
+                                break;
+                            }
+                        }
+                    }
+
                     for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
                     {
                         if (xiCol > 0) xsLine += "\t";
                         xsLine += xoTable.Columns[xiCol].ColumnName;
                     }
                     xsStruc.Add(xsLine);
+
                     for (int xiRow = 0; xiRow < xoTable.Rows.Count; xiRow++)
                     {
-                        xsLine = "";
-                        for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
+                        bool xbOK = true;
+                        if (xiSchemaNameColm >= 0)
                         {
-                            if (xiCol > 0) xsLine += "\t";
-                            xsLine += xoTable.Rows[xiRow][xiCol].ToString();
+                            xbOK = false;
+                            var xv = xoTable.Rows[xiRow][xiSchemaNameColm];
+                            if (xv != null)
+                            {
+                                if (xv.ToString().Trim().ToUpper() == xsSchemaName.ToUpper())
+                                {
+                                    xbOK = true;
+                                }
+                            }
                         }
-                        xsStruc.Add(xsLine);
+
+                        if (xbOK)
+                        {
+                            xsLine = "";
+                            for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
+                            {
+                                if (xiCol > 0) xsLine += "\t";
+                                xsLine += xoTable.Rows[xiRow][xiCol].ToString();
+                            }
+                            xsStruc.Add(xsLine);
+                        }
                     }
                 }
                 if (xoTable != null) xoTable.Dispose();
@@ -3370,8 +3482,8 @@ namespace RebusData6
         /// take the tab-delimited text file, and use it to populate the passed data grid
         /// </summary>
         /// <param name="poGrd">data grid to populate</param>
-        /// <param name="psCsvFile">the file containing the tab-delimited data to populate with</param>
-        public bool ToGridFromTabDelimFile(DataGridView poGrd, string psCsvFile)
+        /// <param name="psTsvFile">the file containing the tab-delimited data to populate with</param>
+        public bool ToGridFromTabDelimFile(DataGridView poGrd, string psTsvFile)
         {
             StreamReader xoRdr = null;
             string xsLine = "", xsErrMsg = "";
@@ -3381,7 +3493,7 @@ namespace RebusData6
             {
                 poGrd.Rows.Clear();
 
-                xoRdr = new StreamReader(psCsvFile);
+                xoRdr = new StreamReader(psTsvFile);
 
                 while (!xoRdr.EndOfStream)
                 {
@@ -3490,7 +3602,7 @@ namespace RebusData6
         /// <param name="poTbl">table name</param>
         /// <param name="xsOutFile">output text path/file name</param>
         /// <returns>true on success, otherwise false (examine Message as to why)</returns>
-        public bool DumpTableToCSV(DataTable poTbl, string xsOutFile)
+        public bool DumpTableToTSV(DataTable poTbl, string xsOutFile)
         {
             string xsErrMsg = "";
             try { File.Delete(xsOutFile); }

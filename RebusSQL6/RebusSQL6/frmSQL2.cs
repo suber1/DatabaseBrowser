@@ -257,14 +257,15 @@ namespace RebusSQL6
             return (msGrpID.Trim());
         }
 
-        public void SetTable(string psTable, string psCaption = "", string psSQL = "", bool pbSkipExecute = false)
+        public void SetTable(string psTable, string psCaption = "", string psSQL = "", bool pbSkipExecute = false, bool pbAsync = false)
         {
             string xsTbl = psTable.Trim();
             if (xsTbl.Length > 1)
             {
                 if (psTable.ToLower() == xsTbl.ToLower())
                 {
-                    xsTbl = xsTbl.Substring(0, 1).ToUpper() + xsTbl.Substring(1);
+                    //xsTbl = xsTbl.Substring(0, 1).ToUpper() + xsTbl.Substring(1);
+                    xsTbl = Proper(xsTbl);
                 }
             }
             msCoreCaption = xsTbl;
@@ -279,13 +280,13 @@ namespace RebusSQL6
                     {
                         miTopStyle = 0;
                         DataTable xoTbl = new DataTable();
-                        if (moDB.SQL("SELECT TOP(1) * FROM " + xsTbl, xoTbl))
+                        if (moDB.SQL("SELECT TOP(1) * FROM " + Global.BracketizeTableName(xsTbl), xoTbl))
                         {
                             miTopStyle = 1;
                         }
                         else
                         {
-                            if (moDB.SQL("SELECT TOP 1 * FROM " + xsTbl, xoTbl)) miTopStyle = 2;
+                            if (moDB.SQL("SELECT TOP 1 * FROM " + Global.BracketizeTableName(xsTbl), xoTbl)) miTopStyle = 2;
                         }
                         xoTbl.Dispose();
                         xoTbl = null;
@@ -315,7 +316,9 @@ namespace RebusSQL6
                     }
                     xsTop = xsTop.Trim();
                     if (xsTop.Length > 0) xsTop = " " + xsTop;
-                    xsSQL = "SELECT" + xsTop + " * FROM [" + xsTbl + "]";
+
+                    string xsColumns = "*";
+                    xsSQL = "SELECT" + xsTop + " " + xsColumns + " FROM  " + Global.BracketizeTableName(xsTbl);
                 }
             }
             else
@@ -331,7 +334,7 @@ namespace RebusSQL6
             LoadStructure(psTable);
             LoadIndices(psTable);
 
-            if (!pbSkipExecute) ExecuteSQL();
+            if (!pbSkipExecute) ExecuteSQL(pbAsynchronously: pbAsync);
         }
 
         public string SpecificTable()
@@ -426,7 +429,7 @@ namespace RebusSQL6
             UpdateStatusBar(xsMsg);
         }
 
-        public void ExecuteSQL(string psChildOrderByClause = "", bool pbFromParent = false, bool pbAsynchronously = false, bool pbViaF5Key = false)
+        public void ExecuteSQL(string psChildOrderByClause = "", bool pbFromParent = false, bool pbAsynchronously = false, bool pbViaF5Key = false, bool pbExecuteHighligthedSQLonly = false)
         {
             const string EXECUTE_SQL = "Execute SQL";
             bool xbSQLErr = false;
@@ -467,6 +470,19 @@ namespace RebusSQL6
                 return;
             }
 
+            string xsSQL = txtSQL.Text;
+            if (pbExecuteHighligthedSQLonly)
+            {
+                if (txtSQL.SelectionStart >= 0 && txtSQL.SelectionLength > 0)
+                {
+                    xsSQL = txtSQL.Text.Substring(txtSQL.SelectionStart, txtSQL.SelectionLength);
+                }
+                else
+                {
+                    Global.ShowMessage("Select the text to execute and try again.", EXECUTE_SQL);
+                }
+            }
+
             if (pbAsynchronously)
             {
                 ExecutionState = ExecutingSQL.Asynchronously;
@@ -490,8 +506,6 @@ namespace RebusSQL6
 
             Cursor xoOrgCursor = Cursor.Current;
             if (!pbAsynchronously) Cursor.Current = Cursors.WaitCursor;
-
-            string xsSQL = txtSQL.Text;
 
             if (msChildWhereClause.Length > 0) xsSQL = xsSQL + " WHERE " + msChildWhereClause;
             if (psChildOrderByClause.Length > 0) xsSQL = xsSQL + " ORDER BY " + psChildOrderByClause;
@@ -606,11 +620,11 @@ namespace RebusSQL6
             }
         }
 
-        private void SaveDataToCSV(string psOutFile)
+        private void SaveDataToTSV(string psOutFile)
         {
-            const string xcsTitle = "Save Data to CSV";
+            const string xcsTitle = "Save Data to TSV";
             DB xoDB = new DB();
-            if (xoDB.DumpTableToCSV(moTbl, psOutFile))
+            if (xoDB.DumpTableToTSV(moTbl, psOutFile))
             {
                 Global.ShowMessage("File " + psOutFile + " has been saved.", xcsTitle);
             }
@@ -683,11 +697,11 @@ namespace RebusSQL6
             {
                 if (e.Control)
                 {
-                    ExecuteSQL("", false, true, true);
+                    ExecuteSQL("", false, true, true, e.Shift);
                 }
                 else
                 {
-                    ExecuteSQL("", false, false, true);
+                    ExecuteSQL("", false, false, true, e.Shift);
                 }
             }
             if (EditorKeyDown) ProcessEditorKey();
@@ -732,15 +746,15 @@ namespace RebusSQL6
             }
         }
 
-        private void exportToCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportToTSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mbDlgSaveOK = false;
             dlgSave.DefaultExt = "txt";
             dlgSave.OverwritePrompt = true;
-            dlgSave.Title = "Save Data to Tab-Delimited CSV File";
+            dlgSave.Title = "Save Data to Tab-Delimited TSV File";
             dlgSave.RestoreDirectory = false;
             dlgSave.ShowDialog();
-            if (mbDlgSaveOK) SaveDataToCSV(dlgSave.FileName);
+            if (mbDlgSaveOK) SaveDataToTSV(dlgSave.FileName);
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1821,7 +1835,16 @@ namespace RebusSQL6
 
             if (ps.Length > 1 && ps.ToLower() == ps)
             {
-                xsReturn = ps.Substring(0, 1).ToUpper() + ps.Substring(1);
+                int xi = ps.IndexOf(".");
+
+                if (xi > 0 && xi < ps.Length - 1)
+                {
+                    xsReturn = ps.Substring(0, xi) + "." + ps.Substring(xi + 1, 1).ToUpper() + ps.Substring(xi + 2);
+                }
+                else
+                {
+                    xsReturn = ps.Substring(0, 1).ToUpper() + ps.Substring(1);
+                }
             }
 
             return (xsReturn);
@@ -2556,7 +2579,7 @@ namespace RebusSQL6
             xs += "  Get Ruby/Rails FKs: for databases with tables and columns named in the Rails convention for primary keys,\r\n";
             xs += "     automatically build a list from the database, and optionally save it for later connecting child data to parent data windows\r\n";
             xs += "  Parent/Child info:  shows the info of this table as it relates to whether or not it is a child, a parent, or even both\r\n";
-            xs += "  Export to CSV:  sends current data in this windows' table to a text/line Comma-Delimited-Variable table of your choice\r\n";
+            xs += "  Export to TSV:  sends current data in this windows' table to a text/line Tab-Separated-Value table of your choice\r\n";
             xs += "  Export to JSON:  sends current data in this windows' table to a text file with JSON notation\r\n";
             xs += "  Print:  sends current data in this windows' table to a printer\r\n";
             xs += "  Choose Child:  opens a new SQL child window using previously defined links\r\n";
@@ -2576,7 +2599,7 @@ namespace RebusSQL6
 
         private void grd_ColumnSortModeChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            //string xs = "";
+            //string xs = "fuck";
         }
 
         private void grd_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
@@ -2807,7 +2830,7 @@ namespace RebusSQL6
                             xsChildColm = xsChildColm.Substring(xsChildColm.IndexOf(".") + 1);
 
                             frmMain xoFrm = (frmMain)this.MdiParent;
-                            frmSQL2 xoSQL = xoFrm.CreateNewSQLWindow(xsChildTable, "SELECT * FROM [" + xsChildTable + "]");
+                            frmSQL2 xoSQL = xoFrm.CreateNewSQLWindow(xsChildTable, "SELECT * FROM " + Global.BracketizeTableName(xsChildTable));
                             xoFrm = null;
                             xoSQL.LinkAsChild(this, msSpecTable, xsParentColm, xsChildColm);
                             xoSQL = null;
@@ -3589,11 +3612,11 @@ namespace RebusSQL6
                                     }
                                     else
                                     {
-                                        string xs = "";
+                                        //string xs = "";
                                     }
                                     xsWord = "";
                                     ColorizeWord(xiPos, xsCh, false, false);
-                                    string xs2 = "";
+                                    //string xs2 = "";
                                     /*if (",()".IndexOf(xsCh) >= 0)
                                     {
                                         ColorizeWord(xiPos, xsCh, false, false);
@@ -3802,6 +3825,12 @@ namespace RebusSQL6
                     }
                 }
             }
+        }
+
+        private void frmSQL2_ResizeEnd(object sender, EventArgs e)
+        {
+            string xsErrMsg;
+            Global.StoreSetting("frmSQL", "LastSize", this.Size.Width.ToString() + "," + this.Size.Height.ToString(), out xsErrMsg);
         }
     }
 

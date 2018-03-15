@@ -182,19 +182,36 @@ namespace RebusSQL6
 
                 //xoTbl.Clear();
                 xoTbl.Reset();
-                xsSQL = "SELECT [value] FROM Customs WHERE userInfo = '" + Environment.UserName + "' AND [section] = 'SQL' AND [entry] = 'SelectTop'";
+
+                //Global.SelectTop = 1000;
+                //Global.TimeoutSecs = 120;
+
+                xsSQL = "SELECT [value], [entry] FROM Customs WHERE userInfo = '" + Environment.UserName + "' AND [section] = 'SQL'"; // AND [entry] = 'SelectTop'";
                 if (xoAppDB.SQL(xsSQL, xoTbl))
                 {
                     if (xoTbl.Rows.Count > 0)
                     {
-                        int xiTop = 0;
-                        try
+                        for (int xiRow = 0; xiRow < xoTbl.Rows.Count; xiRow++)
                         {
-                            string xs = xoTbl.Rows[0][0].ToString().Trim();
-                            xiTop = Convert.ToInt32(xs);
+                            try
+                            {
+                                string xsValue = xoTbl.Rows[xiRow][0].ToString().Trim();
+                                int xiValue = Convert.ToInt32(xsValue);
+                                string xsEntry = xoTbl.Rows[xiRow][1].ToString().Trim().ToUpper();
+                                if (xsEntry == "SelectTop".ToUpper())
+                                {
+                                    if (xiValue > 0) Global.SelectTop = xiValue;
+                                }
+                                else
+                                {
+                                    if (xsEntry == "TimeoutSecs".ToUpper())
+                                    {
+                                        if (xiValue >= 0) Global.TimeoutSecs = xiValue;
+                                    }
+                                }
+                            }
+                            catch { }
                         }
-                        catch { }
-                        if (xiTop > 0) Global.SelectTop = xiTop;
                     }
                 }
 
@@ -361,6 +378,7 @@ namespace RebusSQL6
                 xsDB = GetDrpListLineItem(xoOpenDB.DbToOpen);
                 UpdateOpenedDBs(xoOpenDB.DbToOpen, true);
                 OpenDbByID(miLastDbIdAdded);    //  xoOpenDB.DbToOpen.UniqueID); unless this is REFed
+                moCurrDB.ID = (int)miLastDbIdAdded;
             }
             xoOpenDB.Close();
             xoOpenDB.Dispose();
@@ -1173,6 +1191,7 @@ namespace RebusSQL6
             {
                 moCurrDB.DB = new DB();
                 moCurrDB.ID = poDbToOpen.UniqueID;
+                moCurrDB.DB.CommandTimeoutSeconds = Global.TimeoutSecs;
             }
 
             DatabaseToOpen xrDbToOpen = new DatabaseToOpen();
@@ -1278,13 +1297,36 @@ namespace RebusSQL6
         /// <param name="psCaption"></param>
         /// <param name="psDesc"></param>
         /// <param name="pbLockSQL"></param>
-        public frmSQL2 CreateNewSQLWindow(string psTable = "", string psSQL = "", int piX = -1, int piY = -1, int piWdt = 0, int piHgt = 0, string psCaption = "", string psDesc = "", bool pbLockSQL = false, string psGrpID = "", bool pbRestoring = false)
+        public frmSQL2 CreateNewSQLWindow(string psTable = "", string psSQL = "", int piX = -1, int piY = -1, int piWdt = 0, int piHgt = 0, string psCaption = "", string psDesc = "", bool pbLockSQL = false, string psGrpID = "", bool pbRestoring = false, bool pbAsnyc = false)
         {
-            string xsErrMsg = "";
+            string xsErrMsg = "", xsValue;
             bool xbFocus = true;
             frmSQL2 xoFrm = new frmSQL2();
-            Rectangle xrRect = new Rectangle();
-            xrRect = Screen.PrimaryScreen.WorkingArea;
+
+            if (Global.RetrieveSetting("frmSQL", "LastSize", out xsValue, out xsErrMsg))
+            {
+                if (xsValue.Length >= 3)
+                {
+                    try
+                    {
+                        List<string> xsVals = xsValue.Split(',').ToList<string>();
+                        if (xsVals.Count == 2)
+                        {
+                            Rectangle xrRect = new Rectangle();
+                            xrRect = Screen.PrimaryScreen.WorkingArea;
+                            int xiWdt = Convert.ToInt32(xsVals[0].Trim());
+                            int xiHgt = Convert.ToInt32(xsVals[1].Trim());
+                            if (xiWdt >= this.MinimumSize.Width && xiHgt >= this.MinimumSize.Height && xiWdt <= xrRect.Width && xiHgt <= xrRect.Height)
+                            {
+                                xoFrm.Width = xiWdt;
+                                xoFrm.Height = xiHgt;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+
             int xiDbID = 0; // piDbID;
             if (xiDbID <= 0) xiDbID = moCurrDB.ID;
 
@@ -1329,12 +1371,12 @@ namespace RebusSQL6
                     string xsTable = psTable.Trim();
                     if (xsTable.Length > 0)
                     {
-                        xoFrm.SetTable(psTable, psCaption, psSQL, pbRestoring);            // this will cause ExecuteSQL
+                        xoFrm.SetTable(psTable, psCaption, psSQL, pbRestoring, pbAsnyc);            // this will cause ExecuteSQL
                     }
                     else
                     {
                         xoFrm.HideTableInfoTabs();
-                        if (psSQL.Trim().Length > 0  && !pbRestoring) xoFrm.ExecuteSQL();
+                        if (psSQL.Trim().Length > 0  && !pbRestoring) xoFrm.ExecuteSQL(pbAsynchronously: pbAsnyc);
                     }
 
                     if (pbLockSQL) xoFrm.LockSQL(true);
@@ -1346,7 +1388,7 @@ namespace RebusSQL6
                     }
                     xoFrm.Show();
                     if (xbFocus) xoFrm.FocusSQL();
-                    xoDB = null;
+                    xoDB = null;                // KEEP AN EYE ON THIS FUCK!
                 }
                 else
                 {
@@ -1372,15 +1414,41 @@ namespace RebusSQL6
         /// </summary>
         public void CreateNewTablesWindow(DatabaseObjectType piDbObjType = DatabaseObjectType.Tables)
         {
-            string xsErrMsg = "";
+            string xsErrMsg = "", xsValue;
 
             DatabaseToOpen xrDbToOpen = new DatabaseToOpen();
 
             if (GetDbToOpen(ref xrDbToOpen, out xsErrMsg))
             {
                 frmTbls xoFrm = new frmTbls();
+
+                if (Global.RetrieveSetting("frmTbls", "LastSize", out xsValue, out xsErrMsg))
+                {
+                    if (xsValue.Length >= 3)
+                    {
+                        try
+                        {
+                            List<string> xsVals = xsValue.Split(',').ToList<string>();
+                            if (xsVals.Count == 2)
+                            {
+                                Rectangle xrRect = new Rectangle();
+                                xrRect = Screen.PrimaryScreen.WorkingArea;
+                                int xiWdt = Convert.ToInt32(xsVals[0].Trim());
+                                int xiHgt = Convert.ToInt32(xsVals[1].Trim());
+                                if (xiWdt >= this.MinimumSize.Width && xiHgt >= this.MinimumSize.Height && xiWdt <= xrRect.Width && xiHgt <= xrRect.Height)
+                                {
+                                    xoFrm.Width = xiWdt;
+                                    xoFrm.Height = xiHgt;
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
                 xoFrm.FormType = MDIType.Tables;
                 xoFrm.DatabaseObjectTypeShown = piDbObjType;
+                xoFrm.TreeViewMode = Global.TablesInTreeview;
                 miMDICount++;
                 xoFrm.InternalWindowID = miMDICount;
                 DB xoDB = new DB();
@@ -1567,7 +1635,7 @@ namespace RebusSQL6
                 string xs = "";
                 if (GetDbToOpen(ref xrDbToOpen, out xs))
                 {
-                    xsCaption = xsCaption + ": " + GetDrpListLineItem(xrDbToOpen);  // xrDbToOpen.Database.Trim();
+                    xsCaption = xsCaption + ": " + (xrDbToOpen.DataSource == null || xrDbToOpen.DataSource.Trim().Length == 0 ? "" : xrDbToOpen.DataSource + ".") + GetDrpListLineItem(xrDbToOpen);  // xrDbToOpen.Database.Trim();
                 }
             }
             this.Text = xsCaption;
@@ -1814,7 +1882,7 @@ namespace RebusSQL6
             DatabaseToOpen xrDB = new DatabaseToOpen();
             int xii = 0, xiDbID = 0;
             bool xbCanceled = false, xbLockSQL = false;
-            bool xbOpened = false;
+            //bool xbOpened = false;
             DataTable xoTbl = new DataTable();
             DB xoAppDB = new DB();
             object xv;
@@ -1903,7 +1971,7 @@ namespace RebusSQL6
                                         xrDB.UniqueID = xiDbID;
                                         xrDB.UserID = null2str(xoTbl.Rows[0][5]).Trim();
                                         xrDB.Provider = xrProv;
-                                        if (!OpenDbByID(xiDbID)) xsErrMsg = "Restore failed."; else xbOpened = true;
+                                        if (!OpenDbByID(xiDbID)) xsErrMsg = "Restore failed."; //else xbOpened = true;
                                         xrDB.Password = msCurrDbPswd;
                                     }
                                 }
@@ -2229,6 +2297,12 @@ namespace RebusSQL6
         private void frmMain_Shown(object sender, EventArgs e)
         {
             LoadExternalProviders();
+            string xsVal, xsErr;
+            if (Global.RetrieveSetting("System", "TablesInTreeViewMode", out xsVal, out xsErr))
+            {
+                xsVal = xsVal.ToUpper();
+                Global.TablesInTreeview = (xsVal.IndexOf("T") >= 0 || xsVal.IndexOf("Y") > 0 || xsVal.IndexOf("1") > 0);
+            }
         }
 
         private void btnExtProvs_Click(object sender, EventArgs e)
@@ -2307,41 +2381,87 @@ namespace RebusSQL6
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
-            //Global.ShowMessage("Coming soon... (so far, just to set TOP)");
-
             frmOptions xoDlg = new frmOptions();
-            xoDlg.Top = Global.SelectTop;
+            xoDlg.SelectTop = Global.SelectTop;
+            xoDlg.TimeoutSecs = Global.TimeoutSecs;
             xoDlg.ShowDialog();
             if (xoDlg.OK)
             {
-                if (Global.SelectTop != xoDlg.Top)
+                if (Global.SelectTop != xoDlg.SelectTop || Global.TimeoutSecs != xoDlg.TimeoutSecs)
                 {
-                    Global.SelectTop = xoDlg.Top;
-
+                    string xsErrMsg = "";
                     DB xoAppDB = new DB();
+
                     if (Global.OpenThisAppsDatabase(ref xoAppDB))
                     {
-                        string xsWhere =  "WHERE [userInfo] = '" + Environment.UserName + "' AND [section] = 'SQL' AND [entry] = 'SelectTop'";
-                        string xsSQL = "DELETE * FROM [Customs] " + xsWhere;
-                        if (xoAppDB.SQL(xsSQL))
-                        {
-                            xsSQL = "INSERT INTO [Customs] ([userInfo], [section], [entry], [value]) VALUES (";
-                            xsSQL += "'" + Environment.UserName + "'";
-                            xsSQL += ", 'SQL', 'SelectTop'";
-                            xsSQL += ", " + Global.SelectTop.ToString() + ")";
-                            if (!xoAppDB.SQL(xsSQL)) Global.ShowMessage(xoAppDB.Message + "  (SQL: " + xsSQL + ")", "Save Settings");
-                        }
-                        else
-                        {
-                            Global.ShowMessage(xoAppDB.Message + "  (SQL: " + xsSQL + ")", "Save Settings");
-                        }
-                    }
-                    Global.CloseThisAppsDatabase(ref xoAppDB);
+                        string xsInsertStatic = "INSERT INTO [Customs] ([userInfo], [section], [entry], [value]) VALUES (";
+                        xsInsertStatic += "'" + Environment.UserName + "'";
+                        xsInsertStatic += ", 'SQL'";
+                        string xsWhereStatic = "WHERE [userInfo] = '" + Environment.UserName + "' AND [section] = 'SQL'";
 
+                        string xsSQL = "";
+
+                        for (int xiEntryIdx = 1; xiEntryIdx <= 2; xiEntryIdx++)
+                        {
+                            if ((Global.SelectTop != xoDlg.SelectTop && xiEntryIdx == 1) || (Global.TimeoutSecs != xoDlg.TimeoutSecs && xiEntryIdx == 2))
+                            {
+                                string xsEntryID = "SelectTop";
+                                int xiEntryValue = xoDlg.SelectTop;
+                                if (xiEntryIdx == 2)
+                                {
+                                    xsEntryID = "TimeoutSecs";
+                                    xiEntryValue = xoDlg.TimeoutSecs;
+                                }
+                                xsSQL = "DELETE * FROM [Customs] " + xsWhereStatic + " AND [entry] = '" + xsEntryID + "'";
+                                if (xoAppDB.SQL(xsSQL))
+                                {
+                                    xsSQL = xsInsertStatic + ", '" + xsEntryID + "', " + xiEntryValue.ToString() + ")";
+                                    if (xoAppDB.SQL(xsSQL))
+                                    {
+                                        if (xiEntryIdx == 1)
+                                        {
+                                            Global.SelectTop = xiEntryValue;
+                                        }
+                                        else
+                                        {
+                                            Global.TimeoutSecs = xiEntryValue;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        xsErrMsg = xoAppDB.Message + "  (SQL: " + xsSQL + ")";
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    xsErrMsg = xoAppDB.Message + "  (SQL: " + xsSQL + ")";
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        Global.ShowMessage((xsErrMsg.Length == 0 ? "Settings successfully saved." : xsErrMsg), "Save Settings");
+                        
+                    }
+
+                    Global.CloseThisAppsDatabase(ref xoAppDB);
                 }
             }
             xoDlg.Dispose();
             xoDlg = null;
+        }
+
+        private void btnShowTable_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Global.TablesInTreeview = !Global.TablesInTreeview;
+                string xsErr;
+                Global.StoreSetting("System", "TablesInTreeViewMode", (Global.TablesInTreeview ? "True" : "False"), out xsErr);
+                if (CurrentDBisOpen()) CreateNewTablesWindow(DatabaseObjectType.Tables);
+            }
         }
     }
 
