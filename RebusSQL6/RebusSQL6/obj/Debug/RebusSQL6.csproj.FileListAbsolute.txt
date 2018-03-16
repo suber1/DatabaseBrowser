@@ -84,4 +84,29 @@ C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debu
 C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmTbls.resources
 C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.Properties.Resources.resources
 C:\Users\Lee\Documents\Visual Studio 2015\RebusSQL6\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csproj.GenerateResource.Cache
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe.config
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.exe
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\bin\Debug\RebusSQL6.pdb
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.dll
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\bin\Debug\RebusData6.pdb
 C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csprojResolveAssemblyReference.cache
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.dlgChooseSQL.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmBaseMDI.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChildDlg.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmChooseDB.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.dlgFilter.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmFK.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmInfo.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMain.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmManageExtProvs.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmMasterChildLink.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOpenDB.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmOptions.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmPickOne.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQL2.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmSQLprops.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.frmTbls.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.Properties.Resources.resources
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.csproj.GenerateResource.Cache
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.exe
+C:\GitHub\DatabaseBrowser\RebusSQL6\RebusSQL6\obj\Debug\RebusSQL6.pdb

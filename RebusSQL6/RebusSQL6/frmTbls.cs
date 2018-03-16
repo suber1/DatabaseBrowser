@@ -134,23 +134,34 @@ namespace RebusSQL6
             }
         }
 
-        private void LoadTreeView()
+        private void LoadTreeView(TreeNodeDT poNodeToRefresh = null)
         {
             Cursor xoOrgCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
+            bool xbSingleRefresh = false;
+            string xsRefreshTable = "", xsRefreshSchema = "";
+
+            if (poNodeToRefresh != null)
+            {
+                xsRefreshSchema = SplitSchemaFromTableName(CleanTableNameOnNode(poNodeToRefresh.NodeType == TreeNodeDT.TypeDT.Table ? poNodeToRefresh : poNodeToRefresh.Parent), out xsRefreshTable);
+                xbSingleRefresh = true;
+            }
 
             List<string> xsTbls = moDB.GetTables();
             List<string> xsTbls2 = new List<string>(0);
-            string xsColms = "";
 
-            trvw.Nodes.Clear();
+            if (!xbSingleRefresh) trvw.Nodes.Clear();
 
-            if (xsTbls.Count >= 2)
+            if (xsTbls.Count >= 2)      // first line is columns, remaining lines are actually a row for each table in the database
             {
-                xsColms = xsTbls[0].Trim();
+                string xsColms = xsTbls[0].Trim();
 
                 if (xsColms.IndexOf("\t") >= 0)
                 {
+                    //
+                    // process the first row, which is actually the column names for returned table of tables in GetTables()
+                    // (we are trying to determine which column contains the table name, and if supplied by the provider, the schema name for each table)
+                    //
                     string[] xsSep = { "\t" };
                     string[] xsVals = xsColms.Split(xsSep, StringSplitOptions.None);
                     int xiTableNameColumn = -1, xiSchemaNameColumn = -1;
@@ -163,7 +174,6 @@ namespace RebusSQL6
                                 if (xsVals[xii].ToUpper() == "TABLE_NAME")
                                 {
                                     xiTableNameColumn = xii;
-                                    //break;
                                 }
                                 else
                                 {
@@ -183,21 +193,27 @@ namespace RebusSQL6
                                 }
                             }
                         }
-                        //if (xiTableNameColumn >= 0 && xiPass < 2) break;
                     }
 
+                    //
+                    // next, we can process each table, and build
+                    // us a list of all tables in the database
+                    //
                     for (int xii = 1; xii < xsTbls.Count; xii++)
                     {
+                        string xsSchema = "";
                         string xsTbl = xsTbls[xii];
+                        string xsTblOnly = "";
                         if (xiTableNameColumn >= 0)
                         {
                             xsVals = xsTbl.Split(xsSep, StringSplitOptions.None);
                             try
                             {
                                 xsTbl = xsVals[xiTableNameColumn].Trim();
+                                xsTblOnly = xsTbl;
                                 if (xiSchemaNameColumn >= 0)
                                 {
-                                    string xsSchema = xsVals[xiSchemaNameColumn].Trim();
+                                    xsSchema = xsVals[xiSchemaNameColumn].Trim();
                                     if (xsSchema.Length > 0)
                                         xsTbl = xsSchema + "." + xsTbl;
                                 }
@@ -207,31 +223,41 @@ namespace RebusSQL6
                                 xsTbl = "";
                             }
                         }
-                        xsTbls2.Add(xsTbl);
+                        if (xbSingleRefresh)
+                        {
+                            if (xsTblOnly.Trim().ToUpper() == xsRefreshTable.Trim().ToUpper() && xsSchema.Trim().ToUpper() == xsRefreshSchema.Trim().ToUpper())
+                                xsTbls2.Add(xsTbl);
+                        }
+                        else
+                        {
+                            xsTbls2.Add(xsTbl);
+                        }
                     }
                 }
-            }
-
-            if (xsTbls2.Count > 2) xsTbls2.Sort();
-
-            TreeNode xoMainNode = new TreeNode("Tables");
+            }           // tables >= 2  (actually at least one table in DB, if this is >=2, since first "tbl" is the column definition for the returned table(s) list)
 
 
+            //
+            // sort the table names
+            //
+            if (xsTbls2.Count >= 2) xsTbls2.Sort();
 
+            TreeNodeDT xoMainNode = new TreeNodeDT("Tables", TreeNodeDT.TypeDT.Main);
+
+            //
+            // get all columns for all tables in the database
+            // (or a single table if only refreshing for such)
+            //
             List<SchemaData> xoColmsAll = new List<SchemaData>(0);
-            List<string> xsColmsAll = moDB.GetStructure(null);
+            List<string> xsColmsAll = moDB.GetStructure(xbSingleRefresh ? xsRefreshTable : null);
             int xiTableNameColmsColm = -1;
             int xiColumnNameColmsIdx = -1;
             int xiSchemaNameColmsIdx = -1;
-            //int xiDataTypeColmIdx = -1;
-            //int xiMaxLenColmIdx = -1;
             if (xsColmsAll.Count > 0)
             {
                 xiTableNameColmsColm = ColumnIdxFromDelimTabString(xsColmsAll[0], "TABLE_NAME");
                 xiColumnNameColmsIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "COLUMN_NAME");
                 xiSchemaNameColmsIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "TABLE_SCHEMA");
-                //xiDataTypeColmIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "DATA_TYPE");
-                //xiMaxLenColmIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "CHARACTER_MAXIMUM_LENGTH");
             }
             bool xbColmsAll = (xiTableNameColmsColm >= 0 && xiColumnNameColmsIdx >= 0);
             if (xbColmsAll)
@@ -245,27 +271,16 @@ namespace RebusSQL6
                     string xsSchema = "";
                     if (xiSchemaNameColmsIdx >= 0)
                         xsSchema = xsVals[xiSchemaNameColmsIdx];
-                    /*if (xiDataTypeColmIdx >= 0)
-                    {
-                        xsData += " (" + xsVals[xiDataTypeColmIdx];
-                        xsData2 = xsVals[xiMaxLenColmIdx];
-                        if (xiMaxLenColmIdx >= 0)
-                        {
-                            try
-                            {
-                                int xi = int.Parse(xsVals[xiMaxLenColmIdx]);
-                                if (xi > 0) xsData += "[" + xi.ToString() + "]";
-                            }
-                            catch { }
-                        }
-                        xsData += ")";
-                    }*/
                     xoColmsAll.Add(new SchemaData(xsVals[xiTableNameColmsColm], xsData, xsData2, xsSchema));
                 }
             }
 
+            //
+            // get all indices for all tables in the database
+            // (or a single table if only refreshing for such)
+            //
             List<SchemaData> xoIdxsAll = new List<SchemaData>(0);
-            List<string> xsIdxsAll = moDB.GetIndices(null);
+            List<string> xsIdxsAll = moDB.GetIndices(xbSingleRefresh ? xsRefreshTable : null);
             int xiTableNameIdxsColm = -1;
             int xiColumnNameIdxsIdx = -1;
             if (xsIdxsAll.Count > 0)
@@ -288,14 +303,17 @@ namespace RebusSQL6
                 }
             }
 
-
+            //
+            // build a node for each table, with a child node for columns and a child node for indices
+            // (or prep to refresh a single table node)
+            //
             for (int xii = 0; xii < xsTbls2.Count; xii++)
             {
                 string xsSchema = "";
                 string xsTbl = xsTbls2[xii];
                 int xi = xsTbl.IndexOf("\t");
 
-                TreeNode xoNode = new TreeNode(xsTbl);
+                TreeNodeDT xoTableNode = new TreeNodeDT(xsTbl, TreeNodeDT.TypeDT.Table);
 
                 xi = xsTbl.IndexOf(".");
                 if (xi > 0)
@@ -304,7 +322,7 @@ namespace RebusSQL6
                     xsTbl = xsTbl.Substring(xi + 1);
                 }
 
-                TreeNode xoColmsNode = new TreeNode(COLUMNS_NODE_TEXT);
+                TreeNodeDT xoColmsNode = new TreeNodeDT(COLUMNS_NODE_TEXT, TreeNodeDT.TypeDT.Columns);
 
                 //
                 // add columns for table
@@ -363,9 +381,10 @@ namespace RebusSQL6
                     }
 
                 }
-                xoNode.Nodes.Add(xoColmsNode);
 
-                TreeNode xoIdxsNode = new TreeNode(INDICES_NODE_TEXT);
+                xoTableNode.Nodes.Add(xoColmsNode);
+
+                TreeNodeDT xoIdxsNode = new TreeNodeDT(INDICES_NODE_TEXT, TreeNodeDT.TypeDT.Indices);
 
                 //
                 // add any indices for table
@@ -422,18 +441,129 @@ namespace RebusSQL6
                     {
                         xoIdxsNode.Nodes.Add(xsIdxName);
                     }
-
                 }
-                xoNode.Nodes.Add(xoIdxsNode);
+                xoTableNode.Nodes.Add(xoIdxsNode);
 
                 //
-                // add the now completed tables node
+                // add the now completed node for this table
                 //
-                xoMainNode.Nodes.Add(xoNode);
+                if (xbSingleRefresh)
+                {
+                    //
+                    // replace when refreshing
+                    //
+                    if (poNodeToRefresh.NodeType == TreeNodeDT.TypeDT.Table)
+                    {
+                        int xiIdx = poNodeToRefresh.Index;
+                        bool xbIsExpanded = poNodeToRefresh.IsExpanded;
+                        bool xbFirstIsExpanded = poNodeToRefresh.FirstNode.IsExpanded;
+                        bool xbLastIsExpanded = poNodeToRefresh.LastNode.IsExpanded;
+                        TreeNodeDT xoParent = (TreeNodeDT)poNodeToRefresh.Parent;
+                        xoParent.Nodes.RemoveAt(xiIdx);
+                        xoParent.Nodes.Insert(xiIdx, xoTableNode);
+                        trvw.SelectedNode = xoTableNode;
+                        if (xbIsExpanded != xoTableNode.IsExpanded)
+                        {
+                            if (xbIsExpanded)
+                            {
+                                xoTableNode.Expand();
+                            }
+                            else
+                            {
+                                xoTableNode.Collapse();
+                            }
+                        }
+                        try
+                        {
+                            if (xbFirstIsExpanded != xoTableNode.FirstNode.IsExpanded)
+                            {
+                                if (xbFirstIsExpanded)
+                                {
+                                    xoTableNode.FirstNode.Expand();
+                                }
+                                else
+                                {
+                                    xoTableNode.FirstNode.Collapse();
+                                }
+                            }
+                            if (xbLastIsExpanded != xoTableNode.LastNode.IsExpanded)
+                            {
+                                if (xbLastIsExpanded)
+                                {
+                                    xoTableNode.LastNode.Expand();
+                                }
+                                else
+                                {
+                                    xoTableNode.LastNode.Collapse();
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                    else
+                    {
+                        if (poNodeToRefresh.NodeType == TreeNodeDT.TypeDT.Columns)
+                        {
+                            int xiIdx = poNodeToRefresh.Index;
+                            bool xbIsExpanded = poNodeToRefresh.IsExpanded;
+                            TreeNodeDT xoParent = (TreeNodeDT)poNodeToRefresh.Parent;
+                            xoParent.Nodes.RemoveAt(xiIdx);
+                            xoParent.Nodes.Insert(xiIdx, xoColmsNode);
+                            trvw.SelectedNode = xoColmsNode;
+                            if (xbIsExpanded != xoColmsNode.IsExpanded)
+                            {
+                                if (xbIsExpanded)
+                                {
+                                    xoColmsNode.Expand();
+                                }
+                                else
+                                {
+                                    xoColmsNode.Collapse();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (poNodeToRefresh.NodeType == TreeNodeDT.TypeDT.Indices)
+                            {
+                                int xiIdx = poNodeToRefresh.Index;
+                                bool xbIsExpanded = poNodeToRefresh.IsExpanded;
+                                TreeNodeDT xoParent = (TreeNodeDT)poNodeToRefresh.Parent;
+                                xoParent.Nodes.RemoveAt(xiIdx);
+                                xoParent.Nodes.Insert(xiIdx, xoIdxsNode);
+                                trvw.SelectedNode = xoIdxsNode;
+                                if (xbIsExpanded != xoIdxsNode.IsExpanded)
+                                {
+                                    if (xbIsExpanded)
+                                    {
+                                        xoIdxsNode.Expand();
+                                    }
+                                    else
+                                    {
+                                        xoIdxsNode.Collapse();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //
+                    // otherwise, add to end
+                    //
+                    xoMainNode.Nodes.Add(xoTableNode);
+                }
             }
-            trvw.Nodes.Add(xoMainNode);
 
-            xoMainNode.Expand();
+            if (!xbSingleRefresh)
+            {
+                // add the top level (Tables) node...
+                trvw.Nodes.Add(xoMainNode);
+
+                // and expand it
+                xoMainNode.Expand();
+            }
 
             Cursor.Current = xoOrgCursor;
         }
@@ -637,6 +767,8 @@ namespace RebusSQL6
 
             tsmSeleDistinct.Enabled = (trvw.Visible && trvw.SelectedNode != null && trvw.SelectedNode.Level == 3 && trvw.SelectedNode.Parent.Text == COLUMNS_NODE_TEXT);
             tsmSeleDistinctCounts.Enabled = tsmSeleDistinct.Enabled;
+
+            tsmRefresh.Enabled = (trvw.Visible && trvw.SelectedNode != null);
 
             menuItemShowViews.Enabled = (moDB.Connection.Provider.IntrinsicProvider == IntrinsicProviderType.SqlServer);
             menuItemShowProcs.Enabled = (moDB.Connection.Provider.IntrinsicProvider == IntrinsicProviderType.SqlServer);
@@ -1027,7 +1159,44 @@ namespace RebusSQL6
         {
             tsmShowAllIdxInfo.Checked = !tsmShowAllIdxInfo.Checked;
         }
+
+        private void tsmRefresh_Click(object sender, EventArgs e)
+        {
+            //this.Text = trvw.SelectedNode.Level.ToString();
+            if (trvw.SelectedNode.Level == 0)
+            {
+                LoadTreeView();
+            }
+            else
+            {
+                if (trvw.SelectedNode.Level == 1)
+                {
+                    LoadTreeView((TreeNodeDT)trvw.SelectedNode);
+                }
+                else
+                {
+                    if (trvw.SelectedNode.Level == 2)
+                    {
+                        LoadTreeView((TreeNodeDT)trvw.SelectedNode);
+                    }
+                }
+            }
+        }
     }
+
+    internal class TreeNodeDT : TreeNode
+    {
+        public enum TypeDT { Main, Table, Columns, Indices, Other }
+        
+        public TypeDT NodeType { get; set; }
+
+
+        public TreeNodeDT(string psText, TypeDT peType = TypeDT.Other) : base(psText)
+        {
+            NodeType = peType;
+        }
+    }
+
 
     internal class SchemaData
     {

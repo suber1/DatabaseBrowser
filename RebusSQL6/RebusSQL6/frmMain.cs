@@ -2298,10 +2298,12 @@ namespace RebusSQL6
         {
             LoadExternalProviders();
             string xsVal, xsErr;
-            if (Global.RetrieveSetting("System", "TablesInTreeViewMode", out xsVal, out xsErr))
+            Global.TablesInTreeview = true;     // default beginning 6.7.1
+            if (Global.RetrieveSetting("System", "TablesInTreeViewMode", out xsVal, out xsErr, true))
             {
-                xsVal = xsVal.ToUpper();
-                Global.TablesInTreeview = (xsVal.IndexOf("T") >= 0 || xsVal.IndexOf("Y") > 0 || xsVal.IndexOf("1") > 0);
+                //xsVal = xsVal.ToUpper();
+                //if (xsVal.Trim().Length > 0)
+                    Global.TablesInTreeview = (xsVal.IndexOf("T") >= 0 || xsVal.IndexOf("Y") > 0 || xsVal.IndexOf("1") > 0);
             }
         }
 

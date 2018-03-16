@@ -34,7 +34,6 @@ C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\bin\Debug\RebusData6.dll
 C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\bin\Debug\RebusData6.pdb
 C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.dll
 C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\bin\Debug\System.Data.SQLite.xml
-C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\obj\Debug\RebusData6.csprojResolveAssemblyReference.cache
 C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\obj\Debug\Interop.ADODB.dll
 C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\obj\Debug\Interop.ADOR.dll
 C:\GitHub\DatabaseBrowser\RebusData6\RebusData6\obj\Debug\Interop.ADOX.dll

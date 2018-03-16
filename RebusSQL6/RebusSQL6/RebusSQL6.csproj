@@ -92,7 +92,9 @@
     <Compile Include="frmChooseDB.Designer.cs">
       <DependentUpon>frmChooseDB.cs</DependentUpon>
     </Compile>
-    <Compile Include="dlgFilter.cs" />
+    <Compile Include="dlgFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgFilter.Designer.cs">
       <DependentUpon>dlgFilter.cs</DependentUpon>
     </Compile>

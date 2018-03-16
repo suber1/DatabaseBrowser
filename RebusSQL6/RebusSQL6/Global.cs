@@ -243,7 +243,7 @@ namespace RebusSQL6
             return (xsErrMsg.Length == 0);
         }
 
-        public static bool RetrieveSetting(string psSection, string psEntry, out string psValue, out string psErrMsg)
+        public static bool RetrieveSetting(string psSection, string psEntry, out string psValue, out string psErrMsg, bool pbReturnFalseIfEntryNotPresent = false)
         {
             string xsErrMsg = "";
             string xsValue = "";
@@ -260,6 +260,10 @@ namespace RebusSQL6
                     if (xoTbl.Rows.Count > 0)
                     {
                         xsValue = xoTbl.Rows[0][0].ToString().TrimEnd();
+                    }
+                    else
+                    {
+                        if (pbReturnFalseIfEntryNotPresent) xsErrMsg = "Value not present.";
                     }
                 }
                 else

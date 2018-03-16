@@ -51,6 +51,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuItemFldNames = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmShowAllIdxInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grd)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -129,9 +131,11 @@
             this.menuItemProcParams,
             this.toolStripMenuItem1,
             this.mnuItemFldNames,
-            this.tsmShowAllIdxInfo});
+            this.tsmShowAllIdxInfo,
+            this.toolStripMenuItem2,
+            this.tsmRefresh});
             this.popupMenu.Name = "popupMenu";
-            this.popupMenu.Size = new System.Drawing.Size(331, 308);
+            this.popupMenu.Size = new System.Drawing.Size(331, 336);
             this.popupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.popupMenu_Opening);
             // 
             // tsmSeleTop
@@ -233,13 +237,25 @@
             this.tsmShowAllIdxInfo.Text = "Show all index info on double-click";
             this.tsmShowAllIdxInfo.Click += new System.EventHandler(this.tsmShowAllIdxInfo_Click);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(327, 6);
+            // 
+            // tsmRefresh
+            // 
+            this.tsmRefresh.Name = "tsmRefresh";
+            this.tsmRefresh.Size = new System.Drawing.Size(330, 22);
+            this.tsmRefresh.Text = "Refresh";
+            this.tsmRefresh.Click += new System.EventHandler(this.tsmRefresh_Click);
+            // 
             // frmTbls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.ClientSize = new System.Drawing.Size(693, 390);
             this.ContextMenuStrip = this.popupMenu;
             this.Controls.Add(this.pan);
-            this.Font = new System.Drawing.Font("Lucida Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(100, 100);
@@ -282,5 +298,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmHighlight;
         private System.Windows.Forms.ToolStripMenuItem tsmUnhighlight;
         private System.Windows.Forms.ToolStripMenuItem tsmShowAllIdxInfo;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsmRefresh;
     }
 }
