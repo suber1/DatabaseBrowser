@@ -52,6 +52,7 @@
             this.mnuItemFldNames = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmShowAllIdxInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmColmSort = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grd)).BeginInit();
@@ -133,9 +134,10 @@
             this.mnuItemFldNames,
             this.tsmShowAllIdxInfo,
             this.toolStripMenuItem2,
+            this.tsmColmSort,
             this.tsmRefresh});
             this.popupMenu.Name = "popupMenu";
-            this.popupMenu.Size = new System.Drawing.Size(331, 336);
+            this.popupMenu.Size = new System.Drawing.Size(331, 358);
             this.popupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.popupMenu_Opening);
             // 
             // tsmSeleTop
@@ -242,6 +244,13 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(327, 6);
             // 
+            // tsmColmSort
+            // 
+            this.tsmColmSort.Name = "tsmColmSort";
+            this.tsmColmSort.Size = new System.Drawing.Size(330, 22);
+            this.tsmColmSort.Text = "Sort columns by ordinal";
+            this.tsmColmSort.Click += new System.EventHandler(this.tsmColmSort_Click);
+            // 
             // tsmRefresh
             // 
             this.tsmRefresh.Name = "tsmRefresh";
@@ -300,5 +309,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmShowAllIdxInfo;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem tsmRefresh;
+        private System.Windows.Forms.ToolStripMenuItem tsmColmSort;
     }
 }

@@ -2850,6 +2850,7 @@ namespace RebusData6
             msErrMsg = "";
             DataTable xoTable = null;
             int xiColsFound = 0;
+            bool xbTranslateDataType = false;
 
             string xsTableNameOnly = "";
             string xsSchemaName = SplitSchemaFromTableName(psTableName, out xsTableNameOnly);
@@ -2887,9 +2888,11 @@ namespace RebusData6
                         {
                             case ConnectivityType.OleDB:
                                 xoTable = moDC.moConnOLE.GetSchema("Columns", new[] { xsDB, null, xsTableNameOnly });
+                                xbTranslateDataType = true;
                                 break;
                             case ConnectivityType.ODBC:
                                 xoTable = moDC.moConnODBC.GetSchema("Columns", new[] { xsDB, null, xsTableNameOnly });
+                                xbTranslateDataType = true;
                                 break;
                             default:
                                 xoTable = moDC.moConn.GetSchema("Columns", new[] { xsDB, null, xsTableNameOnly });
@@ -2994,16 +2997,25 @@ namespace RebusData6
                 {
                     string xsLine = "";
                     xsStruc = new List<string>();
+                    int xiDataTypeColm = -1;
                     int xiSchemaNameColm = -1;
                     xsSchemaName = xsSchemaName.Trim();
-                    if (xsSchemaName.Length > 0)
+                    if (xsSchemaName.Length > 0 || xbTranslateDataType)
                     {
                         for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
                         {
-                            if (xoTable.Columns[xiCol].ColumnName.Trim().ToUpper() == "TABLE_SCHEMA")
+                            string xsColmNameUpper = xoTable.Columns[xiCol].ColumnName.Trim().ToUpper();
+                            if (xsColmNameUpper == "TABLE_SCHEMA")
                             {
                                 xiSchemaNameColm = xiCol;
-                                break;
+                                if (!xbTranslateDataType) break;
+                            }
+                            else
+                            {
+                                if (xsColmNameUpper == "DATA_TYPE")
+                                {
+                                    xiDataTypeColm = xiCol;
+                                }
                             }
                         }
                     }
@@ -3034,7 +3046,29 @@ namespace RebusData6
                             for (int xiCol = 0; xiCol < xoTable.Columns.Count; xiCol++)
                             {
                                 if (xiCol > 0) xsLine += "\t";
-                                xsLine += xoTable.Rows[xiRow][xiCol].ToString();
+                                string xsVal = xoTable.Rows[xiRow][xiCol].ToString();
+                                if (xiDataTypeColm >= 0 && xbTranslateDataType)
+                                {
+                                    try
+                                    {
+                                        int xiType = (int)xoTable.Rows[xiRow][xiCol];
+                                        if (moDC.meConnectivity == ConnectivityType.OleDB)
+                                        {
+                                            var xv = (OleDbType)xiType;
+                                            xsVal = xv.ToString();
+                                        }
+                                        else
+                                        {
+                                            if (moDC.meConnectivity == ConnectivityType.ODBC)
+                                            {
+                                                var xv = (OdbcType)xiType;
+                                                xsVal = xv.ToString();
+                                            }
+                                        }
+                                    }
+                                    catch { }
+                                }
+                                xsLine += xsVal;
                             }
                             xsStruc.Add(xsLine);
                             xiColsFound++;

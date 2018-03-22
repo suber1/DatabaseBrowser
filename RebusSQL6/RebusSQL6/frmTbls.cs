@@ -134,7 +134,7 @@ namespace RebusSQL6
             }
         }
 
-        private void LoadTreeView(TreeNodeDT poNodeToRefresh = null)
+        private void LoadTreeView(TreeNodeDT poNodeToRefresh = null, bool pbColmsByOrdPos = false)
         {
             Cursor xoOrgCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
@@ -253,11 +253,13 @@ namespace RebusSQL6
             int xiTableNameColmsColm = -1;
             int xiColumnNameColmsIdx = -1;
             int xiSchemaNameColmsIdx = -1;
+            int xiOrdPosColmIdx = -1;
             if (xsColmsAll.Count > 0)
             {
                 xiTableNameColmsColm = ColumnIdxFromDelimTabString(xsColmsAll[0], "TABLE_NAME");
                 xiColumnNameColmsIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "COLUMN_NAME");
                 xiSchemaNameColmsIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "TABLE_SCHEMA");
+                xiOrdPosColmIdx = ColumnIdxFromDelimTabString(xsColmsAll[0], "ORDINAL_POSITION");
             }
             bool xbColmsAll = (xiTableNameColmsColm >= 0 && xiColumnNameColmsIdx >= 0);
             if (xbColmsAll)
@@ -271,7 +273,16 @@ namespace RebusSQL6
                     string xsSchema = "";
                     if (xiSchemaNameColmsIdx >= 0)
                         xsSchema = xsVals[xiSchemaNameColmsIdx];
-                    xoColmsAll.Add(new SchemaData(xsVals[xiTableNameColmsColm], xsData, xsData2, xsSchema));
+                    int xiOrdPos = -1;
+                    if (xiOrdPosColmIdx >= 0)
+                    {
+                        try
+                        {
+                            xiOrdPos = Convert.ToInt32(xsVals[xiOrdPosColmIdx]);
+                        }
+                        catch { }                    
+                    }
+                    xoColmsAll.Add(new SchemaData(xsVals[xiTableNameColmsColm], xsData, xsData2, xsSchema, xiOrdPos));
                 }
             }
 
@@ -328,6 +339,7 @@ namespace RebusSQL6
                 // add columns for table
                 //
                 List<string> xsColumns = new List<string>(0);
+                List<int> xiColumnsOrd = new List<int>(0);
                 if (xbColmsAll)
                 {
                     string xsTableUpCase = xsTbl.Trim().ToUpper();
@@ -344,7 +356,10 @@ namespace RebusSQL6
                             }
 
                             if (xbOK)
+                            {
                                 xsColumns.Add(xoColmsAll[xi2].Data);
+                                xiColumnsOrd.Add(xoColmsAll[xi2].OrdinalPosition);
+                            }
                         }
                     }
                 }
@@ -355,12 +370,21 @@ namespace RebusSQL6
                     {
                         string[] xsSep = { "\t" };
                         int xiColumnNameIdx = ColumnIdxFromDelimTabString(xsColumnsTabbed[0], "COLUMN_NAME");
+                        int xiColmOrdPosIdx = ColumnIdxFromDelimTabString(xsColumnsTabbed[0], "ORDINAL_POSITION");
                         if (xiColumnNameIdx >= 0)
                         {
                             for (int xi2 = 1; xi2 < xsColumnsTabbed.Count; xi2++)
                             {
                                 string[] xsVals = xsColumnsTabbed[xi2].Split(xsSep, StringSplitOptions.None);
                                 xsColumns.Add(xsVals[xiColumnNameIdx]);
+                                if (xiColmOrdPosIdx >= 0)
+                                {
+                                    try
+                                    {
+                                        xiColumnsOrd.Add(Convert.ToInt32(xsVals[xiColmOrdPosIdx]));
+                                    }
+                                    catch { }
+                                }
                             }
                         }
                         else
@@ -374,12 +398,31 @@ namespace RebusSQL6
                 }
                 if (xsColumns.Count >= 1)
                 {
-                    if (xsColumns.Count > 1) xsColumns.Sort();
+                    if (xsColumns.Count > 1 && xsColumns.Count == xiColumnsOrd.Count)
+                    {
+                        if (pbColmsByOrdPos)
+                        {
+                            int xiPad = 5;
+                            for (int xi3 = 0; xi3 < xsColumns.Count; xi3++)
+                            {
+                                string xs = new string(' ', xiPad) + xiColumnsOrd[xi3].ToString();
+                                xsColumns[xi3] = xs.Substring(xs.Length - xiPad) + xsColumns[xi3];
+                            }
+                            xsColumns.Sort();
+                            for (int xi3 = 0; xi3 < xsColumns.Count; xi3++)
+                            {
+                                xsColumns[xi3] = xsColumns[xi3].Substring(xiPad);
+                            }
+                        }
+                        else
+                        {
+                            xsColumns.Sort();
+                        }
+                    }
                     foreach (string xsColmName in xsColumns)
                     {
                         xoColmsNode.Nodes.Add(xsColmName);
                     }
-
                 }
 
                 xoTableNode.Nodes.Add(xoColmsNode);
@@ -769,6 +812,7 @@ namespace RebusSQL6
             tsmSeleDistinctCounts.Enabled = tsmSeleDistinct.Enabled;
 
             tsmRefresh.Enabled = (trvw.Visible && trvw.SelectedNode != null);
+            tsmColmSort.Enabled = (trvw.Visible && trvw.SelectedNode != null && trvw.SelectedNode.Level == 2);
 
             menuItemShowViews.Enabled = (moDB.Connection.Provider.IntrinsicProvider == IntrinsicProviderType.SqlServer);
             menuItemShowProcs.Enabled = (moDB.Connection.Provider.IntrinsicProvider == IntrinsicProviderType.SqlServer);
@@ -1182,6 +1226,14 @@ namespace RebusSQL6
                 }
             }
         }
+
+        private void tsmColmSort_Click(object sender, EventArgs e)
+        {
+            if (trvw.SelectedNode.Level == 2)
+            {
+                LoadTreeView((TreeNodeDT)trvw.SelectedNode, true);
+            }
+        }
     }
 
     internal class TreeNodeDT : TreeNode
@@ -1204,13 +1256,15 @@ namespace RebusSQL6
         public string Data { get; set; }
         public string Data2 { get; set; }
         public string Schema { get; set; }
+        public int OrdinalPosition { get; set; }
 
-        public SchemaData (string psTable, string psData, string psData2 = "", string psSchema = "")
+        public SchemaData (string psTable, string psData, string psData2 = "", string psSchema = "", int piOrdPos = -1)
         {
             Table = psTable.Trim().ToUpper();
             Data = psData;
             Data2 = psData2;
             Schema = psSchema;
+            OrdinalPosition = piOrdPos;
         }
     }
 }
